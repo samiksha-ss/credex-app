@@ -1,13 +1,39 @@
 import { ResultsDashboard } from '@/features/reports/components/results-dashboard';
 import { AuditInput, AuditResult } from '@/types/audit';
 import { performAudit } from '@/core/engine';
+import { ShareButton } from '@/features/reports/components/share-button';
 import { Button } from '@/components/ui/button';
 import { Share2, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+import { Metadata } from 'next';
+
 interface ReportPageProps {
   params: Promise<{ id: string }>;
+}
+
+export async function generateMetadata({ params }: ReportPageProps): Promise<Metadata> {
+  const { id } = await params;
+  const data = await getAuditData(id);
+  
+  if (!data) return { title: 'Audit Not Found | credex' };
+
+  const savings = data.result.totalPotentialSavings.toFixed(0);
+  const ogUrl = new URL('http://localhost:3000/api/og'); // In prod, use site URL
+  ogUrl.searchParams.set('savings', savings);
+  
+  return {
+    title: `AI Spend Audit - $${savings}/mo saved | credex`,
+    description: `We just uncovered $${savings}/mo in potential savings on our AI tool stack using credex.`,
+    openGraph: {
+      images: [ogUrl.toString()],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      images: [ogUrl.toString()],
+    },
+  };
 }
 
 // Mock function - in production, this would fetch from Supabase
@@ -53,9 +79,7 @@ export default async function ReportPage({ params }: ReportPageProps) {
           <p className="text-muted-foreground">Detailed breakdown and optimization report.</p>
         </div>
         <div className="flex gap-3">
-          <Button variant="outline">
-            <Share2 className="w-4 h-4 mr-2" /> Share Report
-          </Button>
+          <ShareButton />
           <Button>Save to Dashboard</Button>
         </div>
       </div>
