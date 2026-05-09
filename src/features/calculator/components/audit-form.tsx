@@ -162,7 +162,7 @@ export function AuditForm() {
                         <div className="space-y-2">
                           <Label>AI Tool</Label>
                           <Select
-                            onValueChange={(v) => form.setValue(`items.${index}.toolId`, v)}
+                            onValueChange={(v) => form.setValue(`items.${index}.toolId`, v || '')}
                             defaultValue={field.toolId}
                           >
                             <SelectTrigger>

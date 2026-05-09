@@ -475,3 +475,9 @@ The goal is to produce a production-quality implementation plan that feels like 
     Focus on "runway" and "capital efficiency". Use a direct, entrepreneurial tone.
     Do not use generic fluff. Mention specific savings figures.
     "
+
+
+---
+
+# PROMPT 3:
+"Implement the plan, do not do any changes to the markdown files"
