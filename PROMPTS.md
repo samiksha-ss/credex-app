@@ -458,3 +458,20 @@ We are still in architecture and planning mode.
 The goal is to produce a production-quality implementation plan that feels like it was written by a senior startup engineering lead preparing a Product Hunt-ready SaaS MVP.
 "
 ** this worked properly and I got a solid base to start working on, the architecture seemed incomplete and faulty, fixing it took priority now.**
+
+13. AI Summary Generation (Claude 3.5 Sonnet):
+    "
+    You are a senior startup CTO and financial auditor. 
+    Analyze the following AI spend audit data for a ${input.useCase} team of ${input.teamSize} people.
+    
+    Current Spend: $${result.totalMonthlySpend}/mo
+    Potential Savings: $${result.totalPotentialSavings}/mo
+    Efficiency Score: ${result.efficiencyScore}%
+    
+    Recommendations:
+    ${result.recommendations.map(r => `- ${r.message}`).join('\n')}
+    
+    Write a concise, professional executive summary (2-3 sentences) explaining the strategic impact of these findings. 
+    Focus on "runway" and "capital efficiency". Use a direct, entrepreneurial tone.
+    Do not use generic fluff. Mention specific savings figures.
+    "
