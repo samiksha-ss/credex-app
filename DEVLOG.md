@@ -1,38 +1,66 @@
-# DEVLOG.md
+## Day 1- 2026-05-07
 
-## Day 1 — 2026-05-07
-- Initialized Next.js 15 project with TypeScript and Tailwind CSS.
-- Configured ESLint (Flat Config) and Prettier.
-- Setup Vitest for unit testing.
-- Implemented Husky pre-commit hooks (Lint + Test).
-- Created GitHub Actions CI workflow for automated verification.
-**What I learned:** Next.js 15 flat config requirements for ESLint and Vitest integration.
+**Hours worked:** 0
+**What I did:** I have final exams going on, due to the hectic schedule, I couldn't start working on it right away.
+**What I learned:** -
+**Blockers / what I'm stuck on:** -
+**Plan for tomorrow:** Same as today, since exams are till 15th May, however I will complete the assignment alongside exams.
 
-## Day 2 — 2026-05-08
-- Implemented core Audit Engine logic with deterministic calculations.
-- Created pricing configuration for major AI tools (ChatGPT, Claude, Cursor, etc.).
-- Achieved 100% test coverage for seat efficiency and tier optimization logic.
-- Documented PRICING_DATA.md and ARCHITECTURE.md.
+## Day 2— 2026-05-08
 
-## Day 3 — 2026-05-09
-**Phase 2: Form Architecture & State**
-- Integrated shadcn/ui, Zod, and React Hook Form.
-- Developed a multi-step animated diagnostic form with Framer Motion.
-- Implemented field arrays for dynamic AI tool management.
-- Created Server Actions for secure audit processing.
-- Completed full user flow from audit entry to results redirection.
+**Hours worked:** 0
+**What I did:** I have final exams going on, due to the hectic schedule, I couldn't start working on it right away.
+**Plan for tomorrow:** Start making the structure for the project. Initiate by using AI to generate a comprehensive plan and directory structure.
 
-**Phase 3: Results Dashboard & Visualizations**
-- Integrated Recharts for data visualization (Current vs. Optimized Spend).
-- Developed a high-fidelity Results Dashboard with dynamic efficiency scoring.
-- Implemented an Actionable Recommendations list with priority-based styling.
-- Integrated Anthropic SDK for personalized, strategic AI summaries.
-- Created dynamic dynamic report routes with data-fetching simulation.
+## Day 3— 2026-05-09
 
-**Phase 4: Public Reports & Growth Loop**
-- Initialized Supabase client for data persistence and RLS support.
-- Implemented dynamic Open Graph (OG) image generation via `/api/og` (Edge Runtime).
-- Added dynamic SEO metadata generation for report pages to support social previews.
-- Developed an interactive `ShareButton` with clipboard support and X (Twitter) integration.
-**Blockers / what I'm stuck on:** None. Phase 4 completed successfully.
-**Plan for tomorrow:** Proceed to Phase 5: Lead Gen & Final Polish.
+**Hours worked:** 7-8
+**What I did:** 
+- Initialised Project
+- Created Project Structure
+- Configured Development Environment
+- Added UI
+- Configured supabase and connected.
+**What I learned:** 
+- First time suing Prettier and ESLint together
+- Learnt the Credex's main agenda and analysed how to make the website similar to the main app. 
+**Blockers / what I'm stuck on:** 
+- Dummy buttons on Dashboard and are not routed properly.
+- Dark and invisible UI. 
+
+**Plan for tomorrow:** 
+- Fix UI issues.
+- Complete Routing.
+- Change the Audit Engine and test it thoroughly.   
+
+## Day 4— 2026-05-10
+
+**Hours worked:**
+**What I did:**
+**What I learned:** ...
+**Blockers / what I'm stuck on:** ...
+**Plan for tomorrow:** ...
+
+## Day 5— 2026-05-11
+
+**Hours worked:**
+**What I did:**
+**What I learned:** ...
+**Blockers / what I'm stuck on:** ...
+**Plan for tomorrow:** ...
+
+## Day 6— 2026-05-12
+
+**Hours worked:**
+**What I did:**
+**What I learned:** ...
+**Blockers / what I'm stuck on:** ...
+**Plan for tomorrow:** ...
+
+## Day 7— 2026-05-13
+
+**Hours worked:**
+**What I did:**
+**What I learned:** ...
+**Blockers / what I'm stuck on:** ...
+**Plan for tomorrow:** ...

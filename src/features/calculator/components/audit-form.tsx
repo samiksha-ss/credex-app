@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm, useFieldArray, useWatch, Control, UseFormRegister, UseFormSetValue, FieldArrayWithId } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Trash2, ChevronRight, ChevronLeft, Calculator } from 'lucide-react';
@@ -22,6 +22,93 @@ const STEPS = [
   { id: 'tools', title: 'AI Stack' },
   { id: 'review', title: 'Review' },
 ];
+
+interface AuditFormItemProps {
+  index: number;
+  field: FieldArrayWithId<AuditFormData, 'items'>;
+  control: Control<AuditFormData>;
+  register: UseFormRegister<AuditFormData>;
+  setValue: UseFormSetValue<AuditFormData>;
+  remove: (index: number) => void;
+  isOnlyItem: boolean;
+}
+
+function AuditFormItem({ index, field, control, register, setValue, remove, isOnlyItem }: AuditFormItemProps) {
+  const toolId = useWatch({
+    control,
+    name: `items.${index}.toolId` as const,
+    defaultValue: field.toolId,
+  });
+
+  return (
+    <div className="relative space-y-4 rounded-lg border p-4">
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon"
+        className="absolute right-2 top-2 text-muted-foreground hover:text-destructive"
+        onClick={() => remove(index)}
+        disabled={isOnlyItem}
+      >
+        <Trash2 className="h-4 w-4" />
+      </Button>
+      
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="space-y-2">
+          <Label>AI Tool</Label>
+          <Select
+            onValueChange={(v) => setValue(`items.${index}.toolId`, v || '')}
+            defaultValue={field.toolId}
+          >
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {Object.values(PRICING_CONFIG).map((t) => (
+                <SelectItem key={t.id} value={t.id}>{t.name}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        
+        <div className="space-y-2">
+          <Label>Plan Tier</Label>
+          <Select
+            onValueChange={(v) => setValue(`items.${index}.tier`, v as AuditFormData['items'][number]['tier'])}
+            defaultValue={field.tier}
+          >
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {PRICING_CONFIG[toolId]?.plans.map((p) => (
+                <SelectItem key={p.tier} value={p.tier}>
+                  {p.name} (${p.monthlyCostPerSeat}/mo)
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-2">
+          <Label>Monthly Spend ($)</Label>
+          <Input
+            type="number"
+            {...register(`items.${index}.monthlySpend`, { valueAsNumber: true })}
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label>Number of Seats</Label>
+          <Input
+            type="number"
+            {...register(`items.${index}.seats`, { valueAsNumber: true })}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export function AuditForm() {
   const [step, setStep] = useState(0);
@@ -55,8 +142,6 @@ export function AuditForm() {
     try {
       const response = await submitAuditAction(data);
       if (response.success && response.result) {
-        // In the next phase, we'll redirect to a real ID. 
-        // For now, we'll store in a temp state or use a dummy ID.
         router.push('/report/demo');
       } else {
         alert(response.error || 'Something went wrong');
@@ -146,72 +231,16 @@ export function AuditForm() {
                 </CardHeader>
                 <CardContent className="space-y-6">
                   {fields.map((field, index) => (
-                    <div key={field.id} className="relative space-y-4 rounded-lg border p-4">
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        className="absolute right-2 top-2 text-muted-foreground hover:text-destructive"
-                        onClick={() => remove(index)}
-                        disabled={fields.length === 1}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                      
-                      <div className="grid gap-4 sm:grid-cols-2">
-                        <div className="space-y-2">
-                          <Label>AI Tool</Label>
-                          <Select
-                            onValueChange={(v) => form.setValue(`items.${index}.toolId`, v || '')}
-                            defaultValue={field.toolId}
-                          >
-                            <SelectTrigger>
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {Object.values(PRICING_CONFIG).map((t) => (
-                                <SelectItem key={t.id} value={t.id}>{t.name}</SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <Label>Plan Tier</Label>
-                          <Select
-                            onValueChange={(v) => form.setValue(`items.${index}.tier`, v as AuditFormData['items'][number]['tier'])}
-                            defaultValue={field.tier}
-                          >
-                            <SelectTrigger>
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="free">Free</SelectItem>
-                              <SelectItem value="plus">Plus / Pro</SelectItem>
-                              <SelectItem value="team">Team</SelectItem>
-                              <SelectItem value="business">Business</SelectItem>
-                              <SelectItem value="enterprise">Enterprise</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-
-                        <div className="space-y-2">
-                          <Label>Monthly Spend ($)</Label>
-                          <Input
-                            type="number"
-                            {...form.register(`items.${index}.monthlySpend`, { valueAsNumber: true })}
-                          />
-                        </div>
-
-                        <div className="space-y-2">
-                          <Label>Number of Seats</Label>
-                          <Input
-                            type="number"
-                            {...form.register(`items.${index}.seats`, { valueAsNumber: true })}
-                          />
-                        </div>
-                      </div>
-                    </div>
+                    <AuditFormItem
+                      key={field.id}
+                      index={index}
+                      field={field}
+                      control={form.control}
+                      register={form.register}
+                      setValue={form.setValue}
+                      remove={remove}
+                      isOnlyItem={fields.length === 1}
+                    />
                   ))}
                   {form.formState.errors.items && (
                     <p className="text-sm text-destructive">{form.formState.errors.items.message}</p>

@@ -27,7 +27,7 @@ export function ShareButton() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger>
         <Button variant="outline">
           <Share2 className="w-4 h-4 mr-2" /> Share Report
         </Button>

@@ -3,7 +3,7 @@ import { AuditInput, AuditResult } from '@/types/audit';
 import { performAudit } from '@/core/engine';
 import { ShareButton } from '@/features/reports/components/share-button';
 import { Button } from '@/components/ui/button';
-import { Share2, ArrowLeft } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 

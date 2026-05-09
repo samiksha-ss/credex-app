@@ -1,10 +1,10 @@
-export type ToolTier = 'free' | 'plus' | 'pro' | 'team' | 'business' | 'enterprise';
+export type ToolTier = 'free' | 'go' | 'plus' | 'pro' | 'pro_plus' | 'team' | 'business' | 'enterprise' | 'ultra' | 'max';
 
 export interface PricingPlan {
   name: string;
   tier: ToolTier;
   monthlyCostPerSeat: number;
-  annualCostPerSeat?: number; // Optional if discounted
+  annualCostPerSeat?: number;
   minSeats?: number;
   features: string[];
   limitations?: string[];
@@ -14,7 +14,7 @@ export interface ToolPricing {
   id: string;
   name: string;
   plans: PricingPlan[];
-  alternatives: string[]; // List of tool IDs that could replace this
+  alternatives: string[];
 }
 
 export const PRICING_CONFIG: Record<string, ToolPricing> = {
@@ -26,29 +26,60 @@ export const PRICING_CONFIG: Record<string, ToolPricing> = {
         name: 'Free',
         tier: 'free',
         monthlyCostPerSeat: 0,
-        features: ['Unlimited messages on basic models', 'Limited GPT-4o access'],
+        features: ['Basic model access'],
       },
       {
         name: 'Plus',
         tier: 'plus',
         monthlyCostPerSeat: 20,
-        features: ['Full GPT-4o access', 'DALL-E', 'Data Analysis'],
+        features: ['GPT-4o Full Access', 'DALL-E', 'Data Analysis'],
       },
       {
         name: 'Team',
         tier: 'team',
         monthlyCostPerSeat: 30,
         minSeats: 2,
-        features: ['Admin console', 'Higher limits', 'Team workspace'],
+        features: ['Team workspace', 'Admin console'],
       },
       {
         name: 'Enterprise',
         tier: 'enterprise',
-        monthlyCostPerSeat: 60, // Estimated/Average for small enterprise
-        features: ['SSO', 'Advanced Security', 'Unlimited high-speed GPT-4'],
+        monthlyCostPerSeat: 60,
+        features: ['SSO', 'Advanced Security', 'Highest usage limits'],
       },
     ],
     alternatives: ['claude', 'gemini'],
+  },
+  gemini: {
+    id: 'gemini',
+    name: 'Google Gemini',
+    plans: [
+      {
+        name: 'Free',
+        tier: 'free',
+        monthlyCostPerSeat: 0,
+        features: ['Basic model access'],
+      },
+      {
+        name: 'Advanced',
+        tier: 'plus',
+        monthlyCostPerSeat: 20,
+        features: ['1.5 Pro', '2TB Storage'],
+      },
+      {
+        name: 'Business',
+        tier: 'team',
+        monthlyCostPerSeat: 20,
+        features: ['Enterprise-grade data protection', 'Workspace integration'],
+      },
+      {
+        name: 'Enterprise',
+        tier: 'enterprise',
+        monthlyCostPerSeat: 30,
+        features: ['Advanced security', 'Highest context window'],
+      },
+    ],
+    alternatives: ['chatgpt', 'claude'],
   },
   claude: {
     id: 'claude',
@@ -64,14 +95,20 @@ export const PRICING_CONFIG: Record<string, ToolPricing> = {
         name: 'Pro',
         tier: 'pro',
         monthlyCostPerSeat: 20,
-        features: ['High-usage Claude 3.5 Sonnet', 'Projects Feature'],
+        features: ['Claude 3.5 Sonnet', 'Projects Feature'],
       },
       {
         name: 'Team',
         tier: 'team',
         monthlyCostPerSeat: 30,
         minSeats: 5,
-        features: ['Centralized billing', 'Team projects'],
+        features: ['Centralized billing', 'Team features'],
+      },
+      {
+        name: 'Enterprise',
+        tier: 'enterprise',
+        monthlyCostPerSeat: 60,
+        features: ['Enterprise-grade features', 'Highest rate limits'],
       },
     ],
     alternatives: ['chatgpt', 'gemini'],
@@ -90,13 +127,13 @@ export const PRICING_CONFIG: Record<string, ToolPricing> = {
         name: 'Pro',
         tier: 'pro',
         monthlyCostPerSeat: 20,
-        features: ['Unlimited premium models', '500 fast requests'],
+        features: ['Unlimited premium models'],
       },
       {
         name: 'Business',
         tier: 'business',
         monthlyCostPerSeat: 40,
-        features: ['SSO', 'Admin dashboard', 'Privacy mode by default'],
+        features: ['SSO', 'Admin dash'],
       },
     ],
     alternatives: ['copilot'],
@@ -109,47 +146,22 @@ export const PRICING_CONFIG: Record<string, ToolPricing> = {
         name: 'Individual',
         tier: 'pro',
         monthlyCostPerSeat: 10,
-        features: ['Code suggestions', 'Chat in IDE'],
+        features: ['Individual dev features'],
       },
       {
         name: 'Business',
-        tier: 'business',
+        tier: 'team',
         monthlyCostPerSeat: 19,
-        features: ['SSO', 'Organization management'],
+        features: ['Basic team features'],
       },
       {
         name: 'Enterprise',
         tier: 'enterprise',
         monthlyCostPerSeat: 39,
-        features: ['Custom models', 'Knowledge base indexing'],
+        features: ['Knowledge bases', 'Custom models'],
       },
     ],
     alternatives: ['cursor'],
   },
-  gemini: {
-    id: 'gemini',
-    name: 'Google Gemini',
-    plans: [
-      {
-        name: 'Free',
-        tier: 'free',
-        monthlyCostPerSeat: 0,
-        features: ['Basic Gemini model access'],
-      },
-      {
-        name: 'Advanced',
-        tier: 'plus',
-        monthlyCostPerSeat: 20,
-        features: ['Gemini 1.5 Pro', '2TB Google One storage'],
-      },
-      {
-        name: 'Business',
-        tier: 'team',
-        monthlyCostPerSeat: 20,
-        minSeats: 1,
-        features: ['Enterprise-grade data protection', 'Admin console'],
-      },
-    ],
-    alternatives: ['chatgpt', 'claude'],
-  },
 };
+
