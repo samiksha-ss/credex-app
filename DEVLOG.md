@@ -10,6 +10,8 @@
 
 **Hours worked:** 0
 **What I did:** I have final exams going on, due to the hectic schedule, I couldn't start working on it right away.
+**What I learned:** -
+**Blockers / what I'm stuck on:** -
 **Plan for tomorrow:** Start making the structure for the project. Initiate by using AI to generate a comprehensive plan and directory structure.
 
 ## Day 3— 2026-05-09
@@ -33,13 +35,14 @@
 - Complete Routing.
 - Change the Audit Engine and test it thoroughly.   
 
+
 ## Day 4— 2026-05-10
 
-**Hours worked:**
-**What I did:**
-**What I learned:** ...
-**Blockers / what I'm stuck on:** ...
-**Plan for tomorrow:** ...
+**Hours worked:** 
+**What I did:** 
+**What I learned:** 
+**Blockers / what I'm stuck on:** 
+**Plan for tomorrow:** 
 
 ## Day 5— 2026-05-11
 

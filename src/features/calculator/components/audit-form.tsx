@@ -41,7 +41,7 @@ function AuditFormItem({ index, field, control, register, setValue, remove, isOn
   });
 
   return (
-    <div className="relative space-y-4 rounded-lg border p-4">
+    <div className="relative space-y-4 rounded-xl border bg-card p-6 shadow-sm transition-all hover:shadow-md">
       <Button
         type="button"
         variant="ghost"
@@ -154,13 +154,13 @@ export function AuditForm() {
   const progress = ((step + 1) / STEPS.length) * 100;
 
   return (
-    <div className="space-y-8">
+    <div className="max-w-2xl mx-auto space-y-8">
       <div className="space-y-2">
         <div className="flex justify-between text-sm font-medium">
           <span>Step {step + 1} of {STEPS.length}: {STEPS[step].title}</span>
           <span>{Math.round(progress)}% Complete</span>
         </div>
-        <Progress value={progress} className="h-2" />
+        <Progress value={progress} className="h-1.5" />
       </div>
 
       <form onSubmit={form.handleSubmit(onSubmit)}>
