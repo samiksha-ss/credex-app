@@ -481,3 +481,179 @@ The goal is to produce a production-quality implementation plan that feels like 
 
 # PROMPT 3:
 "Implement the plan, do not do any changes to the markdown files"
+
+
+# PROMPT 4:
+"You are working on an existing Next.js SaaS application called an AI Spend Audit tool.
+
+Your task is NOT to rebuild the app from scratch.
+
+Your task is to fully audit, polish, complete, and productionize the existing application.
+
+FIRST:
+
+1. Run through the entire folder structure carefully
+2. Understand the current architecture
+3. Identify unfinished features, broken UI, inconsistent styling, missing layouts, bad spacing, and incomplete flows
+4. Run:
+
+* npm install
+* npm run dev
+* npm run lint
+* npm run build
+
+Fix all major errors before adding features.
+
+IMPORTANT:
+The current app feels visually messy and incomplete.
+Dropdowns are broken/misaligned.
+Spacing and layout are inconsistent.
+The dashboard is either missing or underdeveloped.
+Some components feel unpolished and disconnected.
+
+Your job is to transform this into a polished, modern SaaS product suitable for a Product Hunt launch and internship evaluation.
+
+GOALS:
+
+* Make the app feel premium and intentional
+* Improve UX consistency everywhere
+* Ensure responsive design on mobile + desktop
+* Improve visual hierarchy and spacing
+* Make all forms, dropdowns, dialogs, and cards feel cohesive
+* Remove ugly alignment issues
+* Fix overflowing layouts and broken widths
+* Standardize typography, paddings, gaps, border radii, and shadows
+* Ensure accessibility and keyboard usability
+
+TECH STACK:
+
+* Next.js App Router
+* TailwindCSS
+* shadcn/ui
+* TypeScript
+
+UI DIRECTION:
+
+* Clean modern B2B SaaS aesthetic
+* Inspired by Linear, Vercel, Stripe Dashboard, and Notion
+* Calm neutral palette with one accent color
+* Minimal but premium
+* Strong spacing consistency
+* Avoid clutter and random gradients
+
+CRITICAL FIXES:
+
+1. Layout System
+
+* Create a proper responsive page container system
+* Add proper horizontal padding everywhere
+* Ensure all pages are centered correctly
+* Standardize max widths
+* Fix sidebar/content alignment
+
+2. Dashboard
+   Build a proper dashboard homepage with:
+
+* Hero KPI section
+* Total monthly AI spend
+* Potential savings
+* Savings percentage
+* Top overspending tools
+* Recommended actions
+* Recent audits
+* Charts/visual summaries
+* Empty states if no audits exist
+
+3. Navigation
+
+* Improve sidebar and top navbar
+* Add active states
+* Fix hover states
+* Ensure mobile responsiveness
+* Make navigation feel premium and smooth
+
+4. Forms + Dropdowns
+
+* Audit every dropdown/select/popover/dialog
+* Fix z-index issues
+* Fix clipping/overflow problems
+* Improve widths and alignment
+* Ensure all forms have proper spacing and labels
+* Add validation states
+* Improve loading states
+
+5. Audit Results Page
+   This is the MOST important screen.
+
+It should feel highly shareable and screenshot-worthy.
+
+Improve:
+
+* Savings summary section
+* Per-tool breakdown cards
+* Recommendation clarity
+* Typography hierarchy
+* Call-to-action sections
+* Visual emphasis on savings
+
+6. Consistency Pass
+   Standardize:
+
+* Buttons
+* Cards
+* Inputs
+* Tables
+* Badge styles
+* Shadows
+* Radius values
+* Font sizing
+* Section spacing
+* Empty states
+* Loading skeletons
+
+7. UX Improvements
+
+* Add proper loading states
+* Add skeletons where needed
+* Add error handling
+* Add optimistic UI where useful
+* Improve transitions subtly
+* Improve responsiveness across breakpoints
+
+8. Code Quality
+
+* Refactor duplicated UI
+* Create reusable layout wrappers/components
+* Improve component organization
+* Remove dead code
+* Ensure clean TypeScript usage
+* Improve naming consistency
+
+9. Performance
+
+* Reduce unnecessary client components
+* Optimize rendering
+* Ensure Lighthouse-friendly structure
+* Improve accessibility scores
+
+10. Final Review
+    At the end:
+
+* Run lint/build again
+* Fix all warnings/errors possible
+* Provide a summary of:
+
+  * what was fixed
+  * what was improved
+  * remaining issues
+  * recommended next steps
+
+Use the assignment requirements as product direction:
+
+* The app should feel trustworthy and finance-oriented
+* The audit logic should feel serious and defensible
+* The final UI should look investor/demo ready, not like a student project
+
+Do NOT rewrite everything unnecessarily.
+Improve and refine the existing codebase intelligently.
+"

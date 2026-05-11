@@ -108,15 +108,49 @@ export function performAudit(input: AuditInput): AuditResult {
       }
     });
   });
+ 
+  // 5. Annual Billing Check
+  input.items.forEach((item) => {
+    const tool = PRICING_CONFIG[item.toolId];
+    if (!tool) return;
 
-  // Calculate Efficiency Score (simple version)
+    const currentPlan = tool.plans.find((p) => p.tier === item.tier);
+    if (!currentPlan || !currentPlan.annualCostPerSeat) return;
+
+    const monthlySavings = (currentPlan.monthlyCostPerSeat - currentPlan.annualCostPerSeat) * item.seats;
+    if (monthlySavings > 2) { // Only suggest if savings are meaningful
+      recommendations.push({
+        toolId: item.toolId,
+        type: 'optimize',
+        message: `Switching ${tool.name} to annual billing would save you $${(monthlySavings * 12).toFixed(2)} per year ($${monthlySavings.toFixed(2)}/mo).`,
+        potentialSavings: monthlySavings,
+        isHighFriction: true,
+        priority: 'low',
+      });
+      totalPotentialSavings += monthlySavings;
+    }
+  });
+
+  // Calculate Efficiency Score
   const efficiencyScore =
     totalMonthlySpend > 0 ? Math.max(0, 100 - (totalPotentialSavings / totalMonthlySpend) * 100) : 100;
+
+  const aiSummary = generateExecutiveSummary(totalMonthlySpend, totalPotentialSavings, efficiencyScore, input.useCase);
 
   return {
     totalMonthlySpend,
     totalPotentialSavings,
     recommendations,
     efficiencyScore,
+    aiSummary,
   };
+}
+
+function generateExecutiveSummary(spend: number, savings: number, score: number, useCase: string): string {
+  if (savings === 0) {
+    return `Your AI stack is exceptionally lean with a ${score}% efficiency score. For a ${useCase} of this scale, your current resource allocation is optimal, leaving zero immediate capital waste.`;
+  }
+
+  const impact = savings > 100 ? 'significant' : 'moderate';
+  return `We've identified ${impact} capital efficiency leaks in your AI stack, totaling $${Math.round(savings * 12).toLocaleString()} in annual runway impact. By executing the recommended tier optimizations, you can improve your efficiency score to 95%+ while maintaining full operational capability.`;
 }

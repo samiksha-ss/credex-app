@@ -37,12 +37,12 @@ export function Header() {
           "flex-col md:flex-row items-center gap-6 md:gap-8 text-sm font-medium text-muted-foreground mt-4 md:mt-0 w-full md:w-auto",
           isOpen ? "flex" : "hidden md:flex"
         )}>
-          <Link href="#how-it-works" className="hover:text-primary transition-colors">How it Works</Link>
-          <Link href="#pricing" className="hover:text-primary transition-colors">Pricing</Link>
-          <Link href="#faq" className="hover:text-primary transition-colors">FAQ</Link>
+          <Link href="/#how-it-works" className="hover:text-primary transition-colors">How it Works</Link>
+          <Link href="/pricing" className="hover:text-primary transition-colors">Pricing</Link>
+          <Link href="/#faq" className="hover:text-primary transition-colors">FAQ</Link>
           
           <div className="flex flex-col md:flex-row items-center gap-2 w-full md:w-auto pt-4 md:pt-0 border-t md:border-0 mt-4 md:mt-0">
-            <Link href="/dashboard" className="w-full md:w-auto">
+            <Link href="/login" className="w-full md:w-auto">
               <Button variant="ghost" className="rounded-full px-6 w-full">Login</Button>
             </Link>
             <Link href="/audit" className="w-full md:w-auto">

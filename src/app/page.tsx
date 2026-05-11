@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Header } from '@/components/layout/header';
-import { CheckCircle2, ArrowRight, Zap, TrendingDown, Shield } from 'lucide-react';
+import { CheckCircle2, ArrowRight, Zap, TrendingDown, Shield, Calculator } from 'lucide-react';
 
 export default function LandingPage() {
   return (
@@ -38,7 +38,7 @@ export default function LandingPage() {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20">
             <Link href="/audit">
-              <Button size="lg" className="rounded-full px-8 h-14 text-lg font-semibold bg-black text-white hover:bg-black/90 dark:bg-white dark:text-black shadow-xl group border-0">
+              <Button size="lg" className="rounded-full px-8 h-14 text-lg font-semibold bg-primary hover:bg-primary/90 text-white shadow-xl group border-0">
                 Start Free Audit
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
@@ -92,31 +92,84 @@ export default function LandingPage() {
       </section>
 
       {/* Quick Value Prop */}
-      <section className="py-24 container px-4 mx-auto">
+      <section id="how-it-works" className="py-24 container px-4 mx-auto border-b">
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <h2 className="text-3xl md:text-5xl font-bold mb-4">How it Works</h2>
+          <p className="text-xl text-muted-foreground">Three steps to a leaner, more efficient AI stack.</p>
+        </div>
         <div className="grid md:grid-cols-3 gap-12 text-center md:text-left">
           <div className="space-y-4">
             <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto md:mx-0">
-              <TrendingDown className="text-primary w-6 h-6" />
+              <Calculator className="text-primary w-6 h-6" />
             </div>
-            <h3 className="text-xl font-bold">Uncover Seat Waste</h3>
-            <p className="text-muted-foreground">Identify exact licenses that have zero activity but are still being billed monthly.</p>
+            <h3 className="text-xl font-bold">1. Inventory Your Stack</h3>
+            <p className="text-muted-foreground">Select the AI tools you use and input your current spend and seat count.</p>
           </div>
           <div className="space-y-4">
             <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto md:mx-0">
               <Zap className="text-primary w-6 h-6" />
             </div>
-            <h3 className="text-xl font-bold">Tier Optimization</h3>
-            <p className="text-muted-foreground">We analyze if you actually need &apos;Enterprise&apos; features or if &apos;Team&apos; tiers are sufficient.</p>
+            <h3 className="text-xl font-bold">2. Run Audit</h3>
+            <p className="text-muted-foreground">Our deterministic engine cross-references your data against 50+ vendor pricing rules.</p>
           </div>
           <div className="space-y-4">
             <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto md:mx-0">
               <Shield className="text-primary w-6 h-6" />
             </div>
-            <h3 className="text-xl font-bold">Switching Intelligence</h3>
-            <p className="text-muted-foreground">Financial modeling for competitor alternatives when they offer 2-3x more capital efficiency.</p>
+            <h3 className="text-xl font-bold">3. Get Savings Roadmap</h3>
+            <p className="text-muted-foreground">Receive a shareable report with exact steps to downgrade or switch for maximum efficiency.</p>
           </div>
         </div>
       </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="py-24 bg-muted/20">
+        <div className="container px-4 mx-auto max-w-4xl">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold mb-4">Frequently Asked Questions</h2>
+            <p className="text-xl text-muted-foreground">Everything you need to know about Credex.</p>
+          </div>
+          <div className="grid gap-6">
+            {[
+              {
+                q: "Is my data secure?",
+                a: "Absolutely. We follow a zero-data retention policy for your financial details unless you choose to save the report to your account."
+              },
+              {
+                q: "How accurate is the pricing data?",
+                a: "We update our database weekly to account for the rapid changes in the AI tool market (like the recent OpenAI and DeepSeek price wars)."
+              },
+              {
+                q: "Do you take a commission on savings?",
+                a: "No. Credex is a flat-fee SaaS tool. We don't take a cut of your savings, ensuring our recommendations are unbiased."
+              }
+            ].map((faq, i) => (
+              <div key={i} className="p-8 rounded-2xl bg-background border border-border shadow-sm">
+                <h3 className="text-lg font-bold mb-2">{faq.q}</h3>
+                <p className="text-muted-foreground leading-relaxed">{faq.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-12 border-t">
+        <div className="container px-4 mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+              <CheckCircle2 className="text-white w-5 h-5" />
+            </div>
+            <span className="font-bold">credex</span>
+          </div>
+          <div className="flex gap-8 text-sm text-muted-foreground">
+            <Link href="/privacy" className="hover:text-primary">Privacy</Link>
+            <Link href="/terms" className="hover:text-primary">Terms</Link>
+            <Link href="mailto:hello@credex.ai" className="hover:text-primary">Support</Link>
+          </div>
+          <p className="text-sm text-muted-foreground">© 2026 Credex AI. All rights reserved.</p>
+        </div>
+      </footer>
     </div>
   );
 }

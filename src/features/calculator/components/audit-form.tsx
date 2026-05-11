@@ -141,8 +141,8 @@ export function AuditForm() {
     setIsSubmitting(true);
     try {
       const response = await submitAuditAction(data);
-      if (response.success && response.result) {
-        router.push('/report/demo');
+      if (response.success && response.auditId) {
+        router.push(`/report/${response.auditId}`);
       } else {
         alert(response.error || 'Something went wrong');
       }

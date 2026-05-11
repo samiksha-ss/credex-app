@@ -38,11 +38,26 @@
 
 ## Day 4— 2026-05-10
 
-**Hours worked:** 
+**Hours worked:** 8 hours
 **What I did:** 
+- Manual Fixes in UI 
+- Polish Code
+- Implemented Auth Logic
+- 
 **What I learned:** 
+- Clean Coding
+- Polishing beyond funcitonalities.
+- Error checking and handling.
+- How to pick up a project right from where i was at, rather that starting anew.
 **Blockers / what I'm stuck on:** 
+- Auth Flow is faulty
+- I cannot maintain logged in state, I have to check the session management tomorrow.
 **Plan for tomorrow:** 
+- Fix Auth Flow
+- Work on Audit Engine.
+- Test if the Audit Engine is working as intended.
+- Implement the AI Summary Feature.
+- Implement the Database Logic for saving audits.
 
 ## Day 5— 2026-05-11
 

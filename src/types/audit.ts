@@ -27,4 +27,5 @@ export interface AuditResult {
   totalPotentialSavings: number;
   recommendations: Recommendation[];
   efficiencyScore: number; // 0 to 100
+  aiSummary?: string;
 }

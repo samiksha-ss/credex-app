@@ -19,14 +19,14 @@ import { Button } from '@/components/ui/button';
 
 const navItems = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Audits', href: '/report/demo', icon: FileText },
+  { name: 'Audits', href: '/dashboard', icon: FileText },
   { name: 'New Audit', href: '/audit', icon: Calculator },
-  { name: 'Pricing', href: '#', icon: CreditCard },
+  { name: 'Pricing', href: '/pricing', icon: CreditCard },
 ];
 
 const secondaryNavItems = [
-  { name: 'Settings', href: '#', icon: Settings },
-  { name: 'Help', href: '#', icon: HelpCircle },
+  { name: 'Settings', href: '/dashboard', icon: Settings },
+  { name: 'Help', href: '/#faq', icon: HelpCircle },
 ];
 
 export function Sidebar() {
@@ -37,7 +37,8 @@ export function Sidebar() {
     <aside 
       className={cn(
         "flex flex-col border-r bg-muted/30 transition-all duration-300 h-screen sticky top-0",
-        collapsed ? "w-16" : "w-64"
+        collapsed ? "w-16" : "w-64",
+        "hidden lg:flex"
       )}
     >
       <div className="p-6 flex items-center gap-3">

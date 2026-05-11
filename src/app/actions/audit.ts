@@ -4,7 +4,7 @@ import { auditFormSchema, AuditFormData } from '@/features/calculator/schema';
 import { performAudit } from '@/core/engine';
 import { AuditResult } from '@/types/audit';
 
-export async function submitAuditAction(data: AuditFormData): Promise<{ success: boolean; result?: AuditResult; error?: string }> {
+export async function submitAuditAction(data: AuditFormData): Promise<{ success: boolean; result?: AuditResult; error?: string; auditId?: string }> {
   try {
     // Validate data on server
     const validated = auditFormSchema.parse(data);
@@ -12,12 +12,20 @@ export async function submitAuditAction(data: AuditFormData): Promise<{ success:
     // Perform deterministic audit
     const result = performAudit(validated);
 
-    // In a real app, we would save to Supabase here
-    // const { data: audit, error } = await supabase.from('audits').insert({ ... }).select().single();
+    // Save to Supabase
+    const { saveAudit } = await import('@/services/audit');
+    const savedAudit = await saveAudit({
+      team_size: validated.teamSize,
+      use_case: validated.useCase,
+      total_spend: result.totalMonthlySpend,
+      potential_savings: result.totalPotentialSavings,
+      items: validated.items,
+    });
 
     return {
       success: true,
       result,
+      auditId: savedAudit.id,
     };
   } catch (err) {
     console.error('Audit submission error:', err);
