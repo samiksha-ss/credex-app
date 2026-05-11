@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm, useFieldArray, useWatch, Control, UseFormRegister, UseFormSetValue, FieldArrayWithId } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -17,11 +17,27 @@ import { PRICING_CONFIG } from '@/config/pricing';
 import { submitAuditAction } from '@/app/actions/audit';
 import { useRouter } from 'next/navigation';
 
+const STORAGE_KEY = 'credex_audit_form';
+
 const STEPS = [
   { id: 'team', title: 'Team Profile' },
   { id: 'tools', title: 'AI Stack' },
   { id: 'review', title: 'Review' },
 ];
+
+const USE_CASES = [
+  { value: 'coding', label: 'Software Development / Coding' },
+  { value: 'writing', label: 'Content Writing / Copywriting' },
+  { value: 'data', label: 'Data Analysis / Research' },
+  { value: 'research', label: 'Academic / Market Research' },
+  { value: 'mixed', label: 'Mixed / General Purpose' },
+] as const;
+
+const DEFAULT_VALUES: AuditFormData = {
+  teamSize: 5,
+  useCase: 'mixed',
+  items: [{ toolId: 'chatgpt', tier: 'plus', monthlySpend: 20, seats: 1 }],
+};
 
 interface AuditFormItemProps {
   index: number;
@@ -83,7 +99,7 @@ function AuditFormItem({ index, field, control, register, setValue, remove, isOn
             <SelectContent>
               {PRICING_CONFIG[toolId]?.plans.map((p) => (
                 <SelectItem key={p.tier} value={p.tier}>
-                  {p.name} (${p.monthlyCostPerSeat}/mo)
+                  {p.name} (${p.monthlyCostPerSeat}/mo per seat)
                 </SelectItem>
               ))}
             </SelectContent>
@@ -94,14 +110,16 @@ function AuditFormItem({ index, field, control, register, setValue, remove, isOn
           <Label>Monthly Spend ($)</Label>
           <Input
             type="number"
+            placeholder="e.g. 100"
             {...register(`items.${index}.monthlySpend`, { valueAsNumber: true })}
           />
         </div>
 
         <div className="space-y-2">
-          <Label>Number of Seats</Label>
+          <Label>Number of Seats / Licences</Label>
           <Input
             type="number"
+            placeholder="e.g. 5"
             {...register(`items.${index}.seats`, { valueAsNumber: true })}
           />
         </div>
@@ -113,16 +131,44 @@ function AuditFormItem({ index, field, control, register, setValue, remove, isOn
 export function AuditForm() {
   const [step, setStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
   const router = useRouter();
+
+  // Load persisted values from localStorage
+  const getSavedValues = (): AuditFormData => {
+    if (typeof window === 'undefined') return DEFAULT_VALUES;
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) return JSON.parse(raw) as AuditFormData;
+    } catch {
+      // ignore parse errors
+    }
+    return DEFAULT_VALUES;
+  };
 
   const form = useForm<AuditFormData>({
     resolver: zodResolver(auditFormSchema),
-    defaultValues: {
-      teamSize: 5,
-      useCase: 'startup',
-      items: [{ toolId: 'chatgpt', tier: 'plus', monthlySpend: 20, seats: 1 }],
-    },
+    defaultValues: DEFAULT_VALUES,
   });
+
+  // Hydrate from localStorage after mount (avoids SSR mismatch)
+  useEffect(() => {
+    const saved = getSavedValues();
+    form.reset(saved);
+    setHydrated(true);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Persist to localStorage on every change
+  const watchedValues = form.watch();
+  useEffect(() => {
+    if (!hydrated) return;
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(watchedValues));
+    } catch {
+      // ignore quota errors
+    }
+  }, [watchedValues, hydrated]);
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
@@ -142,9 +188,11 @@ export function AuditForm() {
     try {
       const response = await submitAuditAction(data);
       if (response.success && response.auditId) {
+        // Clear saved state after successful submission
+        try { localStorage.removeItem(STORAGE_KEY); } catch { /* ignore */ }
         router.push(`/report/${response.auditId}`);
       } else {
-        alert(response.error || 'Something went wrong');
+        alert(response.error || 'Something went wrong. Please try again.');
       }
     } finally {
       setIsSubmitting(false);
@@ -152,6 +200,8 @@ export function AuditForm() {
   };
 
   const progress = ((step + 1) / STEPS.length) * 100;
+
+  if (!hydrated) return null; // prevent SSR flicker before localStorage loads
 
   return (
     <div className="max-w-2xl mx-auto space-y-8">
@@ -195,17 +245,20 @@ export function AuditForm() {
                     <Label htmlFor="useCase">Primary Use Case</Label>
                     <Select
                       onValueChange={(v) => form.setValue('useCase', v as AuditFormData['useCase'])}
-                      defaultValue={form.getValues('useCase')}
+                      value={form.watch('useCase')}
                     >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select use case" />
+                      <SelectTrigger id="useCase">
+                        <SelectValue placeholder="Select primary use case" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="individual">Individual / Freelancer</SelectItem>
-                        <SelectItem value="startup">Startup / SMB</SelectItem>
-                        <SelectItem value="enterprise">Large Enterprise</SelectItem>
+                        {USE_CASES.map((uc) => (
+                          <SelectItem key={uc.value} value={uc.value}>{uc.label}</SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
+                    {form.formState.errors.useCase && (
+                      <p className="text-sm text-destructive">{form.formState.errors.useCase.message}</p>
+                    )}
                   </div>
                 </CardContent>
               </Card>
@@ -217,7 +270,7 @@ export function AuditForm() {
                   <div className="flex items-center justify-between">
                     <div>
                       <CardTitle>Your AI Stack</CardTitle>
-                      <CardDescription>Add the tools you currently pay for.</CardDescription>
+                      <CardDescription>Add every AI tool you currently pay for.</CardDescription>
                     </div>
                     <Button
                       type="button"
@@ -259,19 +312,26 @@ export function AuditForm() {
                   <div className="rounded-lg bg-muted p-4 space-y-2">
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Team Size:</span>
-                      <span className="font-medium">{form.getValues('teamSize')}</span>
+                      <span className="font-medium">{form.getValues('teamSize')} people</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Primary Use Case:</span>
+                      <span className="font-medium capitalize">{form.getValues('useCase')}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">AI Tools:</span>
-                      <span className="font-medium">{fields.length} tools tracked</span>
+                      <span className="font-medium">{fields.length} tool{fields.length !== 1 ? 's' : ''} tracked</span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className="flex justify-between border-t pt-2 mt-2">
                       <span className="text-muted-foreground">Total Reported Spend:</span>
-                      <span className="font-medium text-primary">
+                      <span className="font-bold text-primary text-lg">
                         ${form.getValues('items').reduce((acc, curr) => acc + (curr.monthlySpend || 0), 0)}/mo
                       </span>
                     </div>
                   </div>
+                  <p className="text-sm text-muted-foreground">
+                    Your results will be available instantly at a unique shareable URL. No account needed.
+                  </p>
                 </CardContent>
               </Card>
             )}
@@ -299,10 +359,10 @@ export function AuditForm() {
               disabled={isSubmitting}
             >
               {isSubmitting ? (
-                <>Processing...</>
+                <>Calculating savings...</>
               ) : (
                 <>
-                  <Calculator className="mr-2 h-4 w-4" /> Run Audit
+                  <Calculator className="mr-2 h-4 w-4" /> Run Free Audit
                 </>
               )}
             </Button>

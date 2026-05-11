@@ -4,15 +4,17 @@ import { auditFormSchema, AuditFormData } from '@/features/calculator/schema';
 import { performAudit } from '@/core/engine';
 import { AuditResult } from '@/types/audit';
 
-export async function submitAuditAction(data: AuditFormData): Promise<{ success: boolean; result?: AuditResult; error?: string; auditId?: string }> {
+export async function submitAuditAction(
+  data: AuditFormData
+): Promise<{ success: boolean; result?: AuditResult; error?: string; auditId?: string }> {
   try {
     // Validate data on server
     const validated = auditFormSchema.parse(data);
 
-    // Perform deterministic audit
+    // Perform deterministic audit (no AI needed for math)
     const result = performAudit(validated);
 
-    // Save to Supabase
+    // Save to Supabase — no user auth required
     const { saveAudit } = await import('@/services/audit');
     const savedAudit = await saveAudit({
       team_size: validated.teamSize,

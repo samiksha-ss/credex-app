@@ -10,7 +10,7 @@ export interface AuditInputItem {
 export interface AuditInput {
   items: AuditInputItem[];
   teamSize: number;
-  useCase: 'individual' | 'startup' | 'enterprise';
+  useCase: 'coding' | 'writing' | 'data' | 'research' | 'mixed';
 }
 
 export interface Recommendation {

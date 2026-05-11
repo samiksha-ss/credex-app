@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Header } from '@/components/layout/header';
-import { CheckCircle2, ArrowRight, Zap, TrendingDown, Shield, Calculator } from 'lucide-react';
+import { CheckCircle2, ArrowRight, Zap, Shield, Calculator } from 'lucide-react';
 
 export default function LandingPage() {
   return (

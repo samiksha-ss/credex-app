@@ -42,12 +42,12 @@ export function Header() {
           <Link href="/#faq" className="hover:text-primary transition-colors">FAQ</Link>
           
           <div className="flex flex-col md:flex-row items-center gap-2 w-full md:w-auto pt-4 md:pt-0 border-t md:border-0 mt-4 md:mt-0">
-            <Link href="/login" className="w-full md:w-auto">
-              <Button variant="ghost" className="rounded-full px-6 w-full">Login</Button>
+            <Link href="/report/demo" className="w-full md:w-auto">
+              <Button variant="ghost" className="rounded-full px-6 w-full">See Demo</Button>
             </Link>
             <Link href="/audit" className="w-full md:w-auto">
               <Button className="rounded-full px-6 bg-primary hover:bg-primary/90 text-white border-0 w-full shadow-lg shadow-primary/20">
-                Start Audit
+                Free Audit
               </Button>
             </Link>
           </div>
