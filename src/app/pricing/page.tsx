@@ -59,11 +59,18 @@ export default function PricingPage() {
       
       <main className="pt-32 pb-20 container px-4 mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
-            Simple, Transparent <span className="text-primary">Pricing</span>
+          <h1 className="text-4xl md:text-5xl font-semibold tracking-tight mb-4 text-foreground">
+            Simple pricing for <span className="text-primary">intelligence workflows</span>
           </h1>
-          <p className="text-xl text-muted-foreground">
-            Save thousands on your AI stack today. Choose the plan that fits your team&apos;s scale.
+          <p className="text-lg text-muted-foreground">
+            Start with a free audit, then scale into deeper monitoring and exports as your AI surface area grows.
+          </p>
+          <p className="mt-4 text-sm text-muted-foreground">
+            Want market context first?{' '}
+            <Link href="/compare" className="font-medium text-primary underline-offset-4 hover:underline">
+              Explore the platform comparison
+            </Link>
+            .
           </p>
         </div>
 
@@ -76,12 +83,12 @@ export default function PricingPage() {
               }`}
             >
               {tier.featured && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-white px-4 py-1 rounded-full text-sm font-bold">
-                  MOST POPULAR
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-xs font-semibold tracking-wide">
+                  Most popular
                 </div>
               )}
               <div className="mb-8">
-                <h3 className="text-2xl font-bold mb-2">{tier.name}</h3>
+                <h3 className="text-xl font-semibold mb-2">{tier.name}</h3>
                 <div className="flex items-baseline gap-1 mb-4">
                   <span className="text-4xl font-bold">{tier.price}</span>
                   {tier.price !== 'Custom' && <span className="text-muted-foreground">/mo</span>}
@@ -112,9 +119,10 @@ export default function PricingPage() {
           ))}
         </div>
 
-        <div className="mt-20 text-center">
-          <p className="text-muted-foreground">
-            Trusted by founders at <span className="text-foreground font-bold">Y Combinator, Techstars, and 500 Global.</span>
+        <div className="mt-20 max-w-2xl mx-auto text-center rounded-2xl border border-border bg-muted/20 px-6 py-8">
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            Credex is built for founders and operators who want defensible numbers. If you need procurement support,
+            vendor benchmarking, or help negotiating discounts, reach out — we will be direct about what we can prove.
           </p>
         </div>
       </main>

@@ -201,7 +201,27 @@ export function AuditForm() {
 
   const progress = ((step + 1) / STEPS.length) * 100;
 
-  if (!hydrated) return null; // prevent SSR flicker before localStorage loads
+  if (!hydrated) {
+    return (
+      <div className="mx-auto max-w-2xl space-y-6" aria-busy="true" aria-label="Loading audit form">
+        <div className="flex justify-between text-sm font-medium text-muted-foreground">
+          <span className="h-4 w-40 animate-pulse rounded bg-muted" />
+          <span className="h-4 w-16 animate-pulse rounded bg-muted" />
+        </div>
+        <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
+          <div className="h-full w-1/3 animate-pulse bg-primary/30" />
+        </div>
+        <div className="min-h-[280px] rounded-xl border border-border bg-card p-6 shadow-sm">
+          <div className="mb-4 h-5 w-1/2 animate-pulse rounded bg-muted" />
+          <div className="mb-6 h-4 w-full animate-pulse rounded bg-muted" />
+          <div className="space-y-3">
+            <div className="h-9 w-full animate-pulse rounded-lg bg-muted" />
+            <div className="h-9 w-full animate-pulse rounded-lg bg-muted" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-2xl mx-auto space-y-8">

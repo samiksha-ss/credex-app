@@ -22,8 +22,8 @@ interface ResultsDashboardProps {
 
 export function ResultsDashboard({ result }: ResultsDashboardProps) {
   const chartData = [
-    { name: 'Current', amount: result.totalMonthlySpend, color: '#94a3b8' },
-    { name: 'Optimized', amount: result.totalMonthlySpend - result.totalPotentialSavings, color: '#10b981' },
+    { name: 'Current', amount: result.totalMonthlySpend, color: 'var(--color-muted-foreground, #64748b)' },
+    { name: 'Optimized', amount: result.totalMonthlySpend - result.totalPotentialSavings, color: 'var(--color-primary, #15803d)' },
   ];
 
   const annualSavings = result.totalPotentialSavings * 12;
@@ -32,17 +32,20 @@ export function ResultsDashboard({ result }: ResultsDashboardProps) {
     <div className="space-y-8 animate-in fade-in duration-700">
       {/* Hero Section */}
       <div className="grid gap-6 md:grid-cols-3">
-        <Card className="md:col-span-2 bg-primary text-primary-foreground overflow-hidden relative">
+        <Card className="md:col-span-2 bg-primary text-primary-foreground overflow-hidden relative border-0 shadow-md">
           <div className="absolute right-0 top-0 p-8 opacity-10">
             <CalculatorIcon className="w-32 h-32" />
           </div>
           <CardHeader>
-            <CardTitle className="text-xl opacity-90">Estimated Monthly Savings</CardTitle>
-            <div className="text-5xl font-bold mt-2">
+            <CardTitle className="text-xl font-medium text-primary-foreground">
+              Estimated monthly savings (modeled)
+            </CardTitle>
+            <div className="text-5xl font-semibold tracking-tight mt-2 tabular-nums">
               ${result.totalPotentialSavings.toFixed(2)}
             </div>
-            <CardDescription className="text-primary-foreground/70 text-lg">
-              That&apos;s ${annualSavings.toLocaleString()} in annual runway back in your pocket.
+            <CardDescription className="text-primary-foreground/80 text-base leading-relaxed">
+              Annualized for planning: <span className="font-medium text-primary-foreground">${annualSavings.toLocaleString()}</span>
+              <span className="text-primary-foreground/70"> — verify against your invoices before budgeting.</span>
             </CardDescription>
           </CardHeader>
         </Card>
@@ -89,12 +92,32 @@ export function ResultsDashboard({ result }: ResultsDashboardProps) {
           <CardContent className="flex-1 min-h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="name" />
-                <YAxis tickFormatter={(value) => `$${value}`} />
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  vertical={false}
+                  stroke="var(--color-chart-grid, #e5e7eb)"
+                />
+                <XAxis
+                  dataKey="name"
+                  tick={{ fill: 'var(--color-chart-axis, #64748b)', fontSize: 12 }}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <YAxis
+                  tick={{ fill: 'var(--color-chart-axis, #64748b)', fontSize: 12 }}
+                  tickLine={false}
+                  axisLine={false}
+                  tickFormatter={(value) => `$${value}`}
+                />
                 <Tooltip 
                   formatter={(value) => [`$${value}`, 'Amount']}
                   cursor={{ fill: 'transparent' }}
+                  contentStyle={{
+                    backgroundColor: 'var(--color-card, #ffffff)',
+                    border: '1px solid var(--color-border, #e5e7eb)',
+                    borderRadius: '8px',
+                    color: 'var(--color-foreground, #0f172a)',
+                  }}
                 />
                 <Bar dataKey="amount" radius={[4, 4, 0, 0]}>
                   {chartData.map((entry, index) => (
@@ -108,14 +131,14 @@ export function ResultsDashboard({ result }: ResultsDashboardProps) {
 
         {/* Recommendations List */}
         <div className="space-y-4">
-          <h3 className="text-xl font-semibold flex items-center gap-2">
-            <Zap className="text-yellow-500 w-5 h-5" /> 
-            Actionable Recommendations
+          <h3 className="text-xl font-semibold flex items-center gap-2 text-foreground">
+            <Zap className="text-primary w-5 h-5" aria-hidden />
+            Recommendations
           </h3>
           {result.recommendations.length === 0 ? (
             <Card className="bg-muted/50 border-dashed">
               <CardContent className="flex flex-col items-center justify-center py-10 text-center">
-                <ShieldCheck className="w-12 h-12 text-green-500 mb-4" />
+                <ShieldCheck className="w-12 h-12 text-primary mb-4" />
                 <p className="font-medium">Your stack is perfectly optimized!</p>
                 <p className="text-sm text-muted-foreground">No savings opportunities found at this time.</p>
               </CardContent>
@@ -123,15 +146,17 @@ export function ResultsDashboard({ result }: ResultsDashboardProps) {
           ) : (
             result.recommendations.map((rec, idx) => (
               <Card key={idx} className="relative overflow-hidden group hover:shadow-md transition-shadow">
-                <div className={`absolute left-0 top-0 bottom-0 w-1 ${
-                  rec.priority === 'high' ? 'bg-red-500' : 'bg-blue-500'
-                }`} />
+                <div
+                  className={`absolute left-0 top-0 bottom-0 w-1 ${
+                    rec.priority === 'high' ? 'bg-destructive' : 'bg-primary/50'
+                  }`}
+                />
                 <CardHeader className="pb-2">
                   <div className="flex justify-between items-start">
                     <Badge variant={rec.isHighFriction ? 'secondary' : 'default'} className="mb-2">
                       {rec.type.toUpperCase()}
                     </Badge>
-                    <span className="text-lg font-bold text-green-600">
+                    <span className="text-lg font-semibold tabular-nums text-primary">
                       +${rec.potentialSavings.toFixed(2)}/mo
                     </span>
                   </div>
@@ -140,9 +165,9 @@ export function ResultsDashboard({ result }: ResultsDashboardProps) {
                 <CardContent>
                   <p className="text-sm text-muted-foreground flex items-center gap-1">
                     {rec.isHighFriction ? (
-                      <><AlertCircle className="w-4 h-4" /> High Effort Change</>
+                      <><AlertCircle className="w-4 h-4 shrink-0" /> Higher-effort change</>
                     ) : (
-                      <><Zap className="w-4 h-4 text-yellow-500" /> Quick Win</>
+                      <><Zap className="w-4 h-4 shrink-0 text-primary" /> Quick win</>
                     )}
                   </p>
                 </CardContent>

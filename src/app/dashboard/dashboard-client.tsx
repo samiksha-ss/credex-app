@@ -117,8 +117,10 @@ export function DashboardClient({ audits }: DashboardClientProps) {
     <>
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground">Welcome back. Here&apos;s your AI spend overview.</p>
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground">Dashboard</h1>
+          <p className="mt-1 text-muted-foreground">
+            Operational visibility for AI spend — audits, benchmarks, and next steps.
+          </p>
         </div>
         <div className="flex items-center gap-3">
           <Button 
@@ -136,6 +138,30 @@ export function DashboardClient({ audits }: DashboardClientProps) {
           </Link>
         </div>
       </div>
+
+      <Card className="mb-8 border-border/80 shadow-sm">
+        <CardContent className="flex flex-col gap-4 p-6 md:flex-row md:items-center md:justify-between">
+          <div className="space-y-1">
+            <h2 className="text-sm font-semibold tracking-tight text-foreground">What Credex helps you do</h2>
+            <p className="text-sm text-muted-foreground max-w-xl">
+              Audit your stack, compare vendor economics, surface savings opportunities, share reports with
+              your team, and engage Credex when you want help negotiating discounts or restructuring contracts.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2 shrink-0">
+            <Link href="/audit">
+              <Button size="sm" className="rounded-lg">
+                Audit your stack
+              </Button>
+            </Link>
+            <Link href="/compare">
+              <Button variant="outline" size="sm" className="rounded-lg">
+                Compare platforms
+              </Button>
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Stats Grid */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
@@ -169,37 +195,50 @@ export function DashboardClient({ audits }: DashboardClientProps) {
             <CardTitle>Spending Trend</CardTitle>
             <CardDescription>Monthly spend across all AI tools.</CardDescription>
           </CardHeader>
-          <CardContent className="h-[300px] relative">
+          <CardContent className="h-[300px] relative min-h-[300px] min-w-0">
+            {spendData.length === 0 ? (
+              <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
+                Run an audit to see spend trends.
+              </div>
+            ) : (
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={spendData}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  vertical={false}
+                  stroke="var(--color-chart-grid, #e5e7eb)"
+                />
                 <XAxis 
                   dataKey="name" 
-                  stroke="hsl(var(--muted-foreground))" 
+                  stroke="var(--color-chart-axis, #64748b)" 
+                  tick={{ fill: 'var(--color-chart-axis, #64748b)', fontSize: 12 }}
                   fontSize={12} 
                   tickLine={false} 
                   axisLine={false} 
                 />
                 <YAxis 
-                  stroke="hsl(var(--muted-foreground))" 
+                  stroke="var(--color-chart-axis, #64748b)" 
+                  tick={{ fill: 'var(--color-chart-axis, #64748b)', fontSize: 12 }}
                   fontSize={12} 
                   tickLine={false} 
                   axisLine={false}
                   tickFormatter={(value) => `$${value}`}
                 />
                 <Tooltip 
-                  cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }}
+                  cursor={{ fill: 'rgba(15, 23, 42, 0.06)' }}
                   contentStyle={{ 
-                    backgroundColor: 'white',
-                    borderColor: '#e2e8f0',
+                    backgroundColor: 'var(--color-card, #ffffff)',
+                    border: '1px solid var(--color-border, #e5e7eb)',
                     borderRadius: '8px',
-                    color: 'black'
+                    color: 'var(--color-foreground, #0f172a)',
                   }}
-                  itemStyle={{ color: 'black' }}
+                  itemStyle={{ color: 'var(--color-foreground, #0f172a)' }}
+                  labelStyle={{ color: 'var(--color-muted-foreground, #64748b)' }}
                 />
-                <Bar dataKey="amount" fill="#10b981" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="amount" fill="var(--color-primary, #15803d)" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
+            )}
           </CardContent>
         </Card>
 
@@ -209,7 +248,10 @@ export function DashboardClient({ audits }: DashboardClientProps) {
             <CardTitle>Spend Distribution</CardTitle>
             <CardDescription>Breakdown by tool category.</CardDescription>
           </CardHeader>
-          <CardContent className="h-[300px] flex items-center justify-center relative">
+          <CardContent className="h-[300px] flex items-center justify-center relative min-h-[300px] min-w-0">
+            {toolData.length === 0 ? (
+              <p className="text-sm text-muted-foreground">Add audits to see distribution.</p>
+            ) : (
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -227,25 +269,28 @@ export function DashboardClient({ audits }: DashboardClientProps) {
                 </Pie>
                 <Tooltip 
                   contentStyle={{ 
-                    backgroundColor: 'white',
-                    borderColor: '#e2e8f0',
+                    backgroundColor: 'var(--color-card, #ffffff)',
+                    border: '1px solid var(--color-border, #e5e7eb)',
                     borderRadius: '8px',
-                    color: 'black'
+                    color: 'var(--color-foreground, #0f172a)',
                   }}
-                  itemStyle={{ color: 'black' }}
+                  itemStyle={{ color: 'var(--color-foreground, #0f172a)' }}
                 />
               </PieChart>
             </ResponsiveContainer>
+            )}
+            {toolData.length > 0 && (
             <div className="absolute flex flex-col items-center justify-center pointer-events-none">
               <span className="text-2xl font-bold">${Math.round(totalMonthlySpend)}</span>
               <span className="text-xs text-muted-foreground">Avg/Mo</span>
             </div>
+            )}
           </CardContent>
         </Card>
       </div>
 
       {/* Recent Audits */}
-      <Card className="overflow-hidden">
+      <Card id="recent-audits" className="overflow-hidden border-border/80 shadow-sm scroll-mt-8">
         <CardHeader className="bg-muted/30 border-b">
           <CardTitle>Recent Audits</CardTitle>
           <CardDescription>Your latest cost analysis reports.</CardDescription>

@@ -12,21 +12,21 @@ import { Suspense } from 'react';
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const audit = await getAuditById(id);
-  if (!audit) return { title: 'Report Not Found — Credex' };
+  if (!audit) return { title: 'Report not found — Credex' };
 
   const savings = Math.round(audit.potential_savings);
   return {
-    title: `Save $${savings}/mo — AI Spend Audit by Credex`,
-    description: `This audit identified $${savings}/month in potential AI tool savings. See the full breakdown.`,
+    title: `AI spend report — modeled savings $${savings}/mo — Credex`,
+    description: `Modeled AI spend breakdown and recommendations. Savings figures are directional — validate against your invoices.`,
     openGraph: {
-      title: `Save $${savings}/mo on AI Tools`,
-      description: `This audit identified $${savings}/month in savings. See the full breakdown.`,
+      title: `AI spend intelligence report — Credex`,
+      description: `Modeled monthly savings around $${savings} — see assumptions and recommendations.`,
       type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
-      title: `Save $${savings}/mo on AI Tools`,
-      description: `This audit identified $${savings}/month in savings. See the full breakdown.`,
+      title: `AI spend intelligence report — Credex`,
+      description: `Modeled monthly savings around $${savings} — see assumptions and recommendations.`,
     },
   };
 }

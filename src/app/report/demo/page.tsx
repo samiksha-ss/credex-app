@@ -37,9 +37,15 @@ export default function DemoReportPage() {
   return (
     <DashboardLayout>
       <PageContainer>
-        <div className="mb-6 px-4 py-3 rounded-xl bg-muted border border-border text-sm text-muted-foreground">
-          📊 <strong>Demo Report</strong> — This is a sample audit for a 6-person engineering team.{' '}
-          <a href="/audit" className="text-primary underline font-medium">Run your own free audit →</a>
+        <div className="mb-6 rounded-xl border border-border bg-muted/40 px-4 py-3 text-sm text-muted-foreground">
+          <span className="font-semibold text-foreground">Demo report</span> — Sample audit for a six-person engineering team.{' '}
+          <a href="/audit" className="font-medium text-primary underline-offset-4 hover:underline">
+            Run your own audit
+          </a>
+          {' · '}
+          <a href="/compare" className="font-medium text-primary underline-offset-4 hover:underline">
+            Compare platforms
+          </a>
         </div>
         <ReportClient audit={populatedAudit} result={result} />
       </PageContainer>

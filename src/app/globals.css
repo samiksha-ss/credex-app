@@ -4,14 +4,18 @@
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
 
-  --color-background: oklch(1 0 0);
-  --color-foreground: oklch(0.145 0 0);
+  --color-background: oklch(0.995 0.002 145);
+  --color-foreground: oklch(0.22 0.02 145);
   
-  --color-primary: oklch(0.648 0.15 160);
-  --color-primary-foreground: oklch(0.985 0 0);
+  /* Deep green, high contrast on white — financial / premium */
+  --color-primary: oklch(0.42 0.12 155);
+  --color-primary-foreground: oklch(0.99 0.005 145);
+
+  --color-secondary: oklch(0.96 0.008 145);
+  --color-secondary-foreground: oklch(0.28 0.03 145);
   
-  --color-muted: oklch(0.97 0 0);
-  --color-muted-foreground: oklch(0.441 0 0);
+  --color-muted: oklch(0.965 0.006 145);
+  --color-muted-foreground: oklch(0.45 0.02 145);
   
   --color-popover: oklch(1 0 0);
   --color-popover-foreground: oklch(0.145 0 0);
@@ -19,9 +23,9 @@
   --color-card: oklch(1 0 0);
   --color-card-foreground: oklch(0.145 0 0);
   
-  --color-border: oklch(0.922 0 0);
-  --color-input: oklch(0.922 0 0);
-  --color-ring: oklch(0.708 0 0);
+  --color-border: oklch(0.90 0.01 145);
+  --color-input: oklch(0.90 0.01 145);
+  --color-ring: oklch(0.52 0.10 155);
 
   --color-accent: oklch(0.97 0 0);
   --color-accent-foreground: oklch(0.145 0 0);
@@ -34,6 +38,10 @@
   --radius-sm: calc(0.75rem - 4px);
 
   --shadow-premium: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+
+  /* Charts / data viz (explicit — avoids invalid hsl(var(--border)) patterns) */
+  --color-chart-axis: oklch(0.55 0.02 145);
+  --color-chart-grid: oklch(0.90 0.01 145);
 }
 
 @layer base {
@@ -43,6 +51,7 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   }
 }
 

@@ -3,24 +3,24 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { 
-  LayoutDashboard, 
-  FileText, 
-  Calculator, 
-  Settings, 
-  HelpCircle, 
+import {
+  LayoutDashboard,
+  Calculator,
+  Settings,
+  HelpCircle,
   CreditCard,
   ChevronLeft,
   ChevronRight,
-  Sparkles
+  Sparkles,
+  BarChart3,
 } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 
 const navItems = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Audits', href: '/dashboard', icon: FileText },
-  { name: 'New Audit', href: '/audit', icon: Calculator },
+  { name: 'Compare platforms', href: '/compare', icon: BarChart3 },
+  { name: 'Stack audit', href: '/audit', icon: Calculator },
   { name: 'Pricing', href: '/pricing', icon: CreditCard },
 ];
 
@@ -45,12 +45,22 @@ export function Sidebar() {
         <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shrink-0">
           <Sparkles className="text-primary-foreground w-5 h-5" />
         </div>
-        {!collapsed && <span className="font-bold text-xl tracking-tight">credex</span>}
+        {!collapsed && (
+          <div className="flex flex-col leading-tight">
+            <span className="font-semibold text-lg tracking-tight">Credex</span>
+            <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+              AI spend intelligence
+            </span>
+          </div>
+        )}
       </div>
 
       <nav className="flex-1 px-3 space-y-1">
         {navItems.map((item) => {
-          const isActive = pathname === item.href;
+          const isActive =
+            item.href === '/dashboard'
+              ? pathname === '/dashboard'
+              : pathname === item.href || pathname.startsWith(`${item.href}/`);
           return (
             <Link
               key={item.name}
@@ -59,10 +69,10 @@ export function Sidebar() {
                 "flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors group",
                 isActive 
                   ? "bg-primary/10 text-primary" 
-                  : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
               )}
             >
-              <item.icon className={cn("w-5 h-5", isActive ? "text-primary" : "text-muted-foreground group-hover:text-accent-foreground")} />
+              <item.icon className={cn("w-5 h-5", isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground")} />
               {!collapsed && <span>{item.name}</span>}
             </Link>
           );
@@ -74,9 +84,9 @@ export function Sidebar() {
           <Link
             key={item.name}
             href={item.href}
-            className="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors group"
+            className="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors group"
           >
-            <item.icon className="w-5 h-5 text-muted-foreground group-hover:text-accent-foreground" />
+            <item.icon className="w-5 h-5 text-muted-foreground group-hover:text-foreground" />
             {!collapsed && <span>{item.name}</span>}
           </Link>
         ))}

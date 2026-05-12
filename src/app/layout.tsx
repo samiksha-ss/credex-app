@@ -13,8 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "credex | AI Spend Audit for Startups",
-  description: "Save up to 60% on your AI models and cloud credits with deterministic auditing.",
+  title: "Credex — AI spend intelligence for startups",
+  description:
+    "Model AI stack spend, compare vendor economics, and surface savings opportunities with clear assumptions — built for finance-conscious teams.",
 };
 
 export default function RootLayout({
@@ -24,7 +25,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased selection:bg-primary/30`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-background font-sans text-foreground antialiased selection:bg-primary/25`}
+      >
         {children}
       </body>
     </html>

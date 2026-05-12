@@ -90,10 +90,12 @@ export function ReportClient({ audit, result }: ReportClientProps) {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight mb-2">AI Spend Audit Report</h1>
-          <p className="text-xl text-muted-foreground">
-            Generated {new Date(audit.created_at).toLocaleDateString(undefined, { dateStyle: 'long' })} · 
-            Team of {audit.team_size} · <span className="capitalize">{audit.use_case}</span>
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground md:text-4xl mb-2">
+            AI spend intelligence report
+          </h1>
+          <p className="text-lg text-muted-foreground">
+            Generated {new Date(audit.created_at).toLocaleDateString(undefined, { dateStyle: 'long' })} · Team of{' '}
+            {audit.team_size} · <span className="capitalize">{audit.use_case}</span>
           </p>
         </div>
         <div className="flex gap-3">
@@ -138,7 +140,7 @@ export function ReportClient({ audit, result }: ReportClientProps) {
               <div 
                 className={cn(
                   "h-full transition-all duration-1000",
-                  efficiencyScore > 80 ? "bg-primary" : efficiencyScore > 50 ? "bg-yellow-500" : "bg-destructive"
+                  efficiencyScore > 80 ? "bg-primary" : efficiencyScore > 50 ? "bg-amber-500" : "bg-destructive"
                 )}
                 style={{ width: `${efficiencyScore}%` }}
               />
@@ -174,16 +176,18 @@ export function ReportClient({ audit, result }: ReportClientProps) {
             <div className="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
               <div className="flex gap-4 items-start">
                 <div className="p-3 bg-primary rounded-xl shrink-0">
-                  <Zap className="w-6 h-6 text-white" />
+                  <Zap className="w-6 h-6 text-primary-foreground" />
                 </div>
                 <div>
-                  <div className="text-xs font-bold uppercase tracking-widest text-primary mb-1">High Savings Detected</div>
-                  <h3 className="text-xl font-bold mb-1">
-                    You could save ${annualSavings.toLocaleString()}/year — Credex can make it happen faster.
+                  <div className="text-xs font-semibold uppercase tracking-wider text-primary mb-1">
+                    Material modeled savings
+                  </div>
+                  <h3 className="text-xl font-semibold mb-1">
+                    Your modeled savings are significant — worth validating with finance.
                   </h3>
-                  <p className="text-muted-foreground">
-                    Credex sources discounted AI credits (Cursor, Claude, ChatGPT Enterprise) from companies that over-forecasted.
-                    Real discounts. No vendor negotiation needed.
+                  <p className="text-muted-foreground leading-relaxed">
+                    Credex can help you validate assumptions, consolidate vendors, and explore discounted AI
+                    credits where it fits your procurement rules — without overpromising “automatic” savings.
                   </p>
                 </div>
               </div>
@@ -277,63 +281,98 @@ export function ReportClient({ audit, result }: ReportClientProps) {
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <BarChart3 className="w-5 h-5 text-primary" />
-                Industry Benchmarks
+                Context & benchmarks
               </CardTitle>
-              <CardDescription>How you compare to similar {audit.use_case} teams.</CardDescription>
+              <CardDescription>
+                Credex does not claim live peer rankings from your private data. Use this audit as an internal
+                baseline, then stress-test alternatives in the platform comparison view.
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span>Efficiency Rank</span>
-                  <span className="font-bold">Top 25%</span>
+                  <span className="text-muted-foreground">Modeled efficiency</span>
+                  <span className="font-medium tabular-nums">{efficiencyScore}%</span>
                 </div>
                 <div className="w-full bg-muted h-1.5 rounded-full overflow-hidden">
-                  <div className="bg-primary h-full w-[75%]" />
+                  <div
+                    className="bg-primary h-full transition-all duration-500"
+                    style={{ width: `${Math.min(100, efficiencyScore)}%` }}
+                  />
                 </div>
               </div>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2" />
-                  <p className="text-sm">Your spend is <span className="font-bold text-primary">12% higher</span> than average for your team size.</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2" />
-                  <p className="text-sm">Teams with similar use cases save an average of <span className="font-bold text-primary">$450/mo</span> after auditing.</p>
-                </div>
-              </div>
+              <ul className="space-y-3 text-sm text-muted-foreground">
+                <li className="flex gap-2">
+                  <span className="mt-2 size-1.5 shrink-0 rounded-full bg-primary" />
+                  <span>
+                    If recommendations cluster on overlapping assistants, compare seat vs API economics before
+                    expanding headcount.
+                  </span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="mt-2 size-1.5 shrink-0 rounded-full bg-primary" />
+                  <span>
+                    Annual prepay and true-up clauses can materially change TCO — capture them when you renew.
+                  </span>
+                </li>
+              </ul>
+              <Link href="/compare">
+                <Button variant="outline" className="w-full rounded-lg">
+                  Open platform comparison
+                </Button>
+              </Link>
             </CardContent>
           </Card>
         </div>
       </div>
 
       {/* Next Steps */}
-      {result.recommendations.length > 0 && (
-        <Card className="bg-muted/30 border-dashed mb-12">
-          <CardHeader>
-            <CardTitle className="text-lg">Suggested Next Steps</CardTitle>
-          </CardHeader>
-          <CardContent className="grid sm:grid-cols-2 gap-4">
-            <div className="flex gap-4 items-start p-4 bg-background rounded-lg border">
-              <div className="p-2 bg-primary/10 rounded-full shrink-0">
-                <Zap className="text-primary w-4 h-4" />
-              </div>
-              <div>
-                <div className="font-semibold text-sm">Execute Tier Downgrades</div>
-                <p className="text-xs text-muted-foreground">Adjust your plans in tool settings to see savings on your next bill.</p>
-              </div>
+      <Card className="mb-12 border-border/80 bg-muted/20 shadow-sm">
+        <CardHeader>
+          <CardTitle className="text-lg">Suggested next steps</CardTitle>
+          <CardDescription>Practical follow-ups after an audit — from stack changes to market context.</CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-4 md:grid-cols-3">
+          <div className="flex gap-4 items-start rounded-lg border border-border bg-background p-4">
+            <div className="rounded-full bg-primary/10 p-2 shrink-0">
+              <Zap className="h-4 w-4 text-primary" />
             </div>
-            <div className="flex gap-4 items-start p-4 bg-background rounded-lg border">
-              <div className="p-2 bg-primary/10 rounded-full shrink-0">
-                <CheckCircle2 className="text-primary w-4 h-4" />
-              </div>
-              <div>
-                <div className="font-semibold text-sm">Remove Unused Seats</div>
-                <p className="text-xs text-muted-foreground">Prune users who haven&apos;t logged in for 30+ days.</p>
-              </div>
+            <div>
+              <div className="text-sm font-semibold">Review plan tiers</div>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                Validate each recommendation against your real usage — downgrade where utilization is low.
+              </p>
             </div>
-          </CardContent>
-        </Card>
-      )}
+          </div>
+          <div className="flex gap-4 items-start rounded-lg border border-border bg-background p-4">
+            <div className="rounded-full bg-primary/10 p-2 shrink-0">
+              <CheckCircle2 className="h-4 w-4 text-primary" />
+            </div>
+            <div>
+              <div className="text-sm font-semibold">Reconcile seats monthly</div>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                Remove inactive assignees and consolidate duplicate assistants to avoid overlapping spend.
+              </p>
+            </div>
+          </div>
+          <div className="flex gap-4 items-start rounded-lg border border-border bg-background p-4">
+            <div className="rounded-full bg-primary/10 p-2 shrink-0">
+              <BarChart3 className="h-4 w-4 text-primary" />
+            </div>
+            <div className="space-y-2">
+              <div className="text-sm font-semibold">Compare vendor economics</div>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                Stress-test alternatives and billing models before your next renewal cycle.
+              </p>
+              <Link href="/compare">
+                <Button variant="outline" size="sm" className="mt-1 rounded-lg">
+                  Compare platforms
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Email Capture — shown AFTER value (below results) */}
       <Card className={cn(

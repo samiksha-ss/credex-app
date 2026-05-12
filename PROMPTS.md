@@ -657,3 +657,156 @@ Use the assignment requirements as product direction:
 Do NOT rewrite everything unnecessarily.
 Improve and refine the existing codebase intelligently.
 "
+
+# PROMPT 5:
+We are now entering UX refinement and product-completion phase.
+
+I need a major usability and product-alignment pass across the application.
+
+IMPORTANT:
+Do not assume existing filenames, component names, or folder structures.
+First inspect the current project structure and existing implementation before making modifications.
+
+Goals:
+
+1. Fix broken/invisible UI states
+2. Improve visual consistency
+3. Add a platform comparison/intelligence experience
+4. Make the product align more closely with Credex’s actual value proposition:
+   helping startups understand AI pricing, discounts, alternatives, and savings opportunities.
+
+---
+
+## PART 1 — UI/UX REFINEMENT
+
+Audit the entire UI for:
+
+* invisible text
+* poor button contrast
+* unreadable hover states
+* inconsistent spacing
+* inconsistent typography
+* weak visual hierarchy
+* low-contrast cards
+* broken dark/light combinations
+* inaccessible color combinations
+
+Fix all major usability issues.
+
+The design direction should feel:
+
+* clean
+* modern
+* premium
+* trustworthy
+* financially credible
+* Product Hunt ready
+
+Visual inspiration:
+
+* Stripe
+* Linear
+* Vercel
+* modern fintech SaaS
+
+Color direction:
+
+* green + white primary palette
+* subtle neutral grays
+* dark text on light backgrounds
+* accessible contrast ratios
+* restrained accent usage
+* avoid crypto/neon aesthetics
+
+UI principles:
+
+* whitespace first
+* strong typography hierarchy
+* clean cards
+* minimal visual clutter
+* clear CTAs
+* soft shadows
+* subtle borders
+* readable data presentation
+
+Do not overuse gradients.
+Do not make the UI look template-heavy.
+
+---
+
+## PART 2 — PLATFORM COMPARISON / MARKET INTELLIGENCE PAGE
+
+The app currently lacks a strong “comparison” experience.
+
+I want a new feature/page accessible from the dashboard and/or navigation that helps users compare AI platforms, plans, and pricing models.
+
+This should NOT feel like a generic pricing table.
+
+The purpose is:
+
+* helping startups understand pricing differences
+* surfacing cost-efficiency insights
+* showing where savings opportunities exist
+* reinforcing Credex’s expertise in AI infrastructure spend optimization
+
+The page should include:
+
+* comparison of major AI platforms
+* plan tiers
+* seat pricing
+* API pricing summaries
+* ideal use cases
+* strengths/weaknesses
+* startup-fit recommendations
+* estimated cost-efficiency indicators
+* annual vs monthly billing comparisons
+* “best for” labels
+* potential savings indicators
+
+Supported tools should include:
+
+* ChatGPT
+* Claude
+* Gemini
+* Cursor
+* GitHub Copilot
+* Windsurf
+* OpenAI API
+* Anthropic API
+
+The experience should feel:
+
+* interactive
+* analytical
+* useful
+* shareable
+* startup-focused
+
+Potential sections:
+
+* comparison table
+* “best value for startups”
+* “best coding assistant”
+* “best enterprise option”
+* “most cost-efficient”
+* “best API economics”
+* “fast-growing alternatives”
+
+Allow filtering/sorting where appropriate.
+
+---
+
+
+## PART 3 — IMPLEMENTATION REQUIREMENTS
+
+Before generating code:
+
+1. Audit the current implementation
+2. Identify missing product flows
+3. Explain architectural changes needed
+4. Explain data structures needed for comparisons
+
+Then implement incrementally.
+
+Do not massively rewrite the application.
+Build on top of the current architecture and preserve consistency.
