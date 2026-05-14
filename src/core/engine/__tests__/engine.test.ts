@@ -6,7 +6,7 @@ describe('Audit Engine', () => {
   it('should identify over-provisioned seats', () => {
     const input: AuditInput = {
       teamSize: 5,
-      useCase: 'startup',
+      useCase: 'mixed',
       items: [
         {
           toolId: 'chatgpt',
@@ -34,12 +34,12 @@ describe('Audit Engine', () => {
   it('should suggest downgrading if team size is below minimum for a tier', () => {
     const input: AuditInput = {
       teamSize: 2,
-      useCase: 'startup',
+      useCase: 'mixed',
       items: [
         {
-          toolId: 'claude',
-          tier: 'team',
-          monthlySpend: 150, // 5 seats min * $30
+          toolId: 'windsurf',
+          tier: 'enterprise',
+          monthlySpend: 150, // 5 seats * $30 (Enterprise has minSeats: 5)
           seats: 5,
         },
       ],
@@ -50,7 +50,7 @@ describe('Audit Engine', () => {
     expect(result.recommendations).toContainEqual(
       expect.objectContaining({
         type: 'downgrade',
-        toolId: 'claude',
+        toolId: 'windsurf',
       })
     );
   });
@@ -58,13 +58,13 @@ describe('Audit Engine', () => {
   it('should return 100 efficiency if already optimized', () => {
     const input: AuditInput = {
       teamSize: 5,
-      useCase: 'startup',
+      useCase: 'mixed',
       items: [
         {
-          toolId: 'chatgpt',
-          tier: 'plus',
-          monthlySpend: 100, // 5 seats at $20
-          seats: 5,
+          toolId: 'openai_api',
+          tier: 'api',
+          monthlySpend: 100,
+          seats: 1,
         },
       ],
     };
@@ -78,12 +78,12 @@ describe('Audit Engine', () => {
   it('should suggest switching to a cheaper alternative if savings are significant', () => {
     const input: AuditInput = {
       teamSize: 10,
-      useCase: 'startup',
+      useCase: 'mixed',
       items: [
         {
-          toolId: 'claude',
-          tier: 'team',
-          monthlySpend: 300, // 10 seats * $30
+          toolId: 'chatgpt',
+          tier: 'pro',
+          monthlySpend: 2000, // 10 seats * $200
           seats: 10,
         },
       ],
@@ -91,11 +91,12 @@ describe('Audit Engine', () => {
 
     const result = performAudit(input);
 
-    // Gemini Business is $20/seat, saving $10/seat * 10 = $100
+    // Same tier `pro`: Claude Pro ~$20 vs ChatGPT Pro $200 → $180/seat * 10
     expect(result.recommendations).toContainEqual(
       expect.objectContaining({
         type: 'switch',
-        potentialSavings: 100,
+        toolId: 'chatgpt',
+        potentialSavings: 1800,
       })
     );
   });

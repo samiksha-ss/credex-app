@@ -59,7 +59,7 @@ export function performAudit(input: AuditInput): AuditResult {
 
     // 3. Simple Overspend Check (User inputs more than calculated cost)
     const expectedCost = currentPlan.monthlyCostPerSeat * item.seats;
-    if (item.monthlySpend > expectedCost + 5) {
+    if (currentPlan.monthlyCostPerSeat > 0 && item.monthlySpend > expectedCost + 5) {
       // Allow $5 buffer
       const overcharge = item.monthlySpend - expectedCost;
       recommendations.push({
@@ -89,7 +89,11 @@ export function performAudit(input: AuditInput): AuditResult {
 
       // Find equivalent tier in alternative tool
       const altPlan = altTool.plans.find((p) => p.tier === item.tier);
-      if (altPlan && altPlan.monthlyCostPerSeat < currentPlan.monthlyCostPerSeat) {
+      if (
+        altPlan &&
+        altPlan.monthlyCostPerSeat > 0 &&
+        altPlan.monthlyCostPerSeat < currentPlan.monthlyCostPerSeat
+      ) {
         const switchSavings =
           (currentPlan.monthlyCostPerSeat - altPlan.monthlyCostPerSeat) *
           Math.min(item.seats, input.teamSize);

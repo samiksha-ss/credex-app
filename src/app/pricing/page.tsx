@@ -3,6 +3,51 @@ import { Button } from '@/components/ui/button';
 import { Check } from 'lucide-react';
 import Link from 'next/link';
 
+/** Representative USD list prices (consumer / seat where applicable). Vendors change pricing — verify before buying. */
+const marketAiPlans: { vendor: string; plans: { name: string; price: string }[] }[] = [
+  {
+    vendor: 'ChatGPT',
+    plans: [
+      { name: 'Go', price: '~$5/mo' },
+      { name: 'Plus', price: '$20/mo' },
+      { name: 'Pro', price: '$200/mo' },
+      { name: 'Business', price: '~$21/user/mo' },
+    ],
+  },
+  {
+    vendor: 'Google AI / Gemini',
+    plans: [
+      { name: 'AI Plus', price: '~$5/mo' },
+      { name: 'AI Pro', price: '~$23/mo' },
+      { name: 'AI Ultra', price: '$288/mo' },
+    ],
+  },
+  {
+    vendor: 'Claude',
+    plans: [
+      { name: 'Pro', price: '~$20/mo' },
+      { name: 'Max', price: '$100–200/mo' },
+    ],
+  },
+  {
+    vendor: 'Cursor',
+    plans: [
+      { name: 'Pro', price: '$20/mo' },
+      { name: 'Pro+', price: '$60/mo' },
+      { name: 'Ultra', price: '$200/mo' },
+    ],
+  },
+  {
+    vendor: 'GitHub Copilot',
+    plans: [
+      { name: 'Pro', price: '$10/mo' },
+      { name: 'Pro+', price: '$39/mo' },
+      { name: 'Team', price: '~$4/user/mo' },
+      { name: 'Enterprise', price: '~$21/user/mo' },
+    ],
+  },
+];
+
 const tiers = [
   {
     name: 'Free',
@@ -118,6 +163,37 @@ export default function PricingPage() {
             </div>
           ))}
         </div>
+
+        <section className="mt-24 max-w-4xl mx-auto" aria-labelledby="market-ai-pricing">
+          <h2 id="market-ai-pricing" className="text-2xl font-semibold tracking-tight text-center mb-2">
+            AI vendor plans (USD reference)
+          </h2>
+          <p className="text-center text-sm text-muted-foreground mb-8 max-w-2xl mx-auto">
+            Clean list of common paid tiers Credex uses for benchmarking. Figures are approximate list prices; confirm
+            with each vendor for your region, tax, and annual terms.
+          </p>
+          <div className="rounded-2xl border border-border bg-card overflow-hidden shadow-sm">
+            <div className="grid grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,0.9fr)] gap-0 text-sm font-medium border-b border-border bg-muted/40 px-4 py-3 sm:px-6">
+              <span>Service</span>
+              <span>Plan</span>
+              <span className="text-right sm:text-left">Price</span>
+            </div>
+            <ul className="divide-y divide-border">
+              {marketAiPlans.flatMap((group) =>
+                group.plans.map((row) => (
+                  <li
+                    key={`${group.vendor}-${row.name}`}
+                    className="grid grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,0.9fr)] gap-2 items-baseline px-4 py-3 sm:px-6 text-sm"
+                  >
+                    <span className="font-medium text-foreground">{group.vendor}</span>
+                    <span className="text-foreground">{row.name}</span>
+                    <span className="text-muted-foreground text-right sm:text-left tabular-nums">{row.price}</span>
+                  </li>
+                ))
+              )}
+            </ul>
+          </div>
+        </section>
 
         <div className="mt-20 max-w-2xl mx-auto text-center rounded-2xl border border-border bg-muted/20 px-6 py-8">
           <p className="text-sm text-muted-foreground leading-relaxed">

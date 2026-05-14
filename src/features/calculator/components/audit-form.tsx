@@ -99,7 +99,10 @@ function AuditFormItem({ index, field, control, register, setValue, remove, isOn
             <SelectContent>
               {PRICING_CONFIG[toolId]?.plans.map((p) => (
                 <SelectItem key={p.tier} value={p.tier}>
-                  {p.name} (${p.monthlyCostPerSeat}/mo per seat)
+                  {p.name}
+                  {p.monthlyCostPerSeat > 0
+                    ? ` ($${p.monthlyCostPerSeat}/mo per seat)`
+                    : ' (usage-based — enter your typical monthly spend)'}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -155,12 +158,14 @@ export function AuditForm() {
   useEffect(() => {
     const saved = getSavedValues();
     form.reset(saved);
-    setHydrated(true);
+    queueMicrotask(() => {
+      setHydrated(true);
+    });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Persist to localStorage on every change
-  const watchedValues = form.watch();
+  // Persist to localStorage on every change (useWatch avoids RHF + React Compiler lint noise)
+  const watchedValues = useWatch({ control: form.control });
   useEffect(() => {
     if (!hydrated) return;
     try {
@@ -265,7 +270,7 @@ export function AuditForm() {
                     <Label htmlFor="useCase">Primary Use Case</Label>
                     <Select
                       onValueChange={(v) => form.setValue('useCase', v as AuditFormData['useCase'])}
-                      value={form.watch('useCase')}
+                      value={watchedValues.useCase ?? DEFAULT_VALUES.useCase}
                     >
                       <SelectTrigger id="useCase">
                         <SelectValue placeholder="Select primary use case" />

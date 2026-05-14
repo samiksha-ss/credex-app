@@ -17,6 +17,7 @@ export interface ToolPricing {
   alternatives: string[];
 }
 
+/** List-price style figures (USD/mo per seat unless noted). Used by the audit engine and calculator UI. */
 export const PRICING_CONFIG: Record<string, ToolPricing> = {
   chatgpt: {
     id: 'chatgpt',
@@ -26,39 +27,45 @@ export const PRICING_CONFIG: Record<string, ToolPricing> = {
         name: 'Free',
         tier: 'free',
         monthlyCostPerSeat: 0,
-        features: ['Basic model access'],
+        features: ['Limited model access'],
+      },
+      {
+        name: 'Go',
+        tier: 'go',
+        monthlyCostPerSeat: 5,
+        features: ['Lightweight paid access'],
       },
       {
         name: 'Plus',
         tier: 'plus',
         monthlyCostPerSeat: 20,
-        features: ['GPT-4o Full Access', 'DALL-E', 'Data Analysis'],
+        features: ['GPT-4 class models', 'Higher limits'],
       },
       {
-        name: 'Team',
-        tier: 'team',
-        monthlyCostPerSeat: 30,
-        minSeats: 2,
-        features: ['Team workspace', 'Admin console'],
+        name: 'Pro',
+        tier: 'pro',
+        monthlyCostPerSeat: 200,
+        features: ['Highest limits', 'Research-grade workflows'],
       },
       {
-        name: 'Enterprise',
-        tier: 'enterprise',
-        monthlyCostPerSeat: 60,
-        features: ['SSO', 'Advanced Security', 'Highest usage limits'],
+        name: 'Business',
+        tier: 'business',
+        monthlyCostPerSeat: 21,
+        features: ['Team workspace', 'Admin & billing'],
       },
       {
-        name: 'API Direct',
+        name: 'API (usage)',
         tier: 'api',
-        monthlyCostPerSeat: 5,
-        features: ['Pay as you go API'],
+        monthlyCostPerSeat: 0,
+        features: ['Billed per token — separate from ChatGPT seats'],
+        limitations: ['Not a fixed monthly seat price'],
       },
     ],
     alternatives: ['claude', 'gemini'],
   },
   gemini: {
     id: 'gemini',
-    name: 'Google Gemini',
+    name: 'Google AI (Gemini)',
     plans: [
       {
         name: 'Free',
@@ -67,34 +74,29 @@ export const PRICING_CONFIG: Record<string, ToolPricing> = {
         features: ['Basic model access'],
       },
       {
-        name: 'Advanced',
+        name: 'AI Plus',
         tier: 'plus',
-        monthlyCostPerSeat: 20,
-        features: ['1.5 Pro', '2TB Storage'],
-      },
-      {
-        name: 'Business',
-        tier: 'team',
-        monthlyCostPerSeat: 20,
-        features: ['Enterprise-grade data protection', 'Workspace integration'],
-      },
-      {
-        name: 'Enterprise',
-        tier: 'enterprise',
-        monthlyCostPerSeat: 30,
-        features: ['Advanced security', 'Highest context window'],
-      },
-      {
-        name: 'Ultra',
-        tier: 'ultra',
-        monthlyCostPerSeat: 30,
-        features: ['Access to Gemini 1.5 Ultra'],
-      },
-      {
-        name: 'API',
-        tier: 'api',
         monthlyCostPerSeat: 5,
-        features: ['API Access'],
+        features: ['Google AI subscription tier'],
+      },
+      {
+        name: 'AI Pro',
+        tier: 'pro',
+        monthlyCostPerSeat: 23,
+        features: ['Stronger models & limits'],
+      },
+      {
+        name: 'AI Ultra',
+        tier: 'ultra',
+        monthlyCostPerSeat: 288,
+        features: ['Top-tier Google AI access'],
+      },
+      {
+        name: 'API (usage)',
+        tier: 'api',
+        monthlyCostPerSeat: 0,
+        features: ['Gemini API / cloud — usage-based'],
+        limitations: ['Not a fixed monthly seat price'],
       },
     ],
     alternatives: ['chatgpt', 'claude'],
@@ -114,33 +116,21 @@ export const PRICING_CONFIG: Record<string, ToolPricing> = {
         tier: 'pro',
         monthlyCostPerSeat: 20,
         annualCostPerSeat: 16,
-        features: ['Claude 3.5 Sonnet', 'Projects Feature'],
-      },
-      {
-        name: 'Team',
-        tier: 'team',
-        monthlyCostPerSeat: 30,
-        annualCostPerSeat: 25,
-        minSeats: 5,
-        features: ['Centralized billing', 'Team features'],
-      },
-      {
-        name: 'Enterprise',
-        tier: 'enterprise',
-        monthlyCostPerSeat: 60,
-        features: ['Enterprise-grade features', 'Highest rate limits'],
+        features: ['Higher limits', 'Projects'],
       },
       {
         name: 'Max',
         tier: 'max',
-        monthlyCostPerSeat: 40,
-        features: ['Max features'],
+        monthlyCostPerSeat: 150,
+        features: ['Power-user tier'],
+        limitations: ['Vendor pricing often ~$100–200/mo; midpoint used for modeling'],
       },
       {
-        name: 'API Direct',
+        name: 'API (usage)',
         tier: 'api',
-        monthlyCostPerSeat: 5,
-        features: ['API Access'],
+        monthlyCostPerSeat: 0,
+        features: ['Anthropic API — usage-based'],
+        limitations: ['Not a fixed monthly seat price'],
       },
     ],
     alternatives: ['chatgpt', 'gemini'],
@@ -184,8 +174,8 @@ export const PRICING_CONFIG: Record<string, ToolPricing> = {
       {
         name: 'API (Pay-as-you-go)',
         tier: 'go',
-        monthlyCostPerSeat: 5, // Estimated minimum
-        features: ['Extremely low cost API access'],
+        monthlyCostPerSeat: 5,
+        features: ['Low-cost API access'],
       },
     ],
     alternatives: ['chatgpt', 'claude'],
@@ -198,26 +188,26 @@ export const PRICING_CONFIG: Record<string, ToolPricing> = {
         name: 'Hobby',
         tier: 'free',
         monthlyCostPerSeat: 0,
-        features: ['Basic AI features'],
+        features: ['Limited agent requests'],
       },
       {
         name: 'Pro',
         tier: 'pro',
         monthlyCostPerSeat: 20,
         annualCostPerSeat: 16,
-        features: ['Unlimited premium models'],
+        features: ['Unlimited tab completions', 'Extended agent limits'],
       },
       {
-        name: 'Business',
-        tier: 'business',
-        monthlyCostPerSeat: 40,
-        features: ['SSO', 'Admin dash'],
-      },
-      {
-        name: 'Enterprise',
-        tier: 'enterprise',
+        name: 'Pro+',
+        tier: 'pro_plus',
         monthlyCostPerSeat: 60,
-        features: ['Advanced security'],
+        features: ['3× usage on OpenAI, Claude, Gemini'],
+      },
+      {
+        name: 'Ultra',
+        tier: 'ultra',
+        monthlyCostPerSeat: 200,
+        features: ['20× usage vs Pro', 'Priority access'],
       },
     ],
     alternatives: ['copilot'],
@@ -227,23 +217,29 @@ export const PRICING_CONFIG: Record<string, ToolPricing> = {
     name: 'GitHub Copilot',
     plans: [
       {
-        name: 'Individual',
+        name: 'Pro',
         tier: 'pro',
         monthlyCostPerSeat: 10,
         annualCostPerSeat: 8.33,
-        features: ['Individual dev features'],
+        features: ['Completions & Chat for individuals'],
       },
       {
-        name: 'Business',
+        name: 'Pro+',
+        tier: 'pro_plus',
+        monthlyCostPerSeat: 39,
+        features: ['Premium models', 'Higher limits'],
+      },
+      {
+        name: 'Team',
         tier: 'team',
-        monthlyCostPerSeat: 19,
-        features: ['Basic team features'],
+        monthlyCostPerSeat: 4,
+        features: ['Org licensing', 'Policy controls'],
       },
       {
         name: 'Enterprise',
         tier: 'enterprise',
-        monthlyCostPerSeat: 39,
-        features: ['Knowledge bases', 'Custom models'],
+        monthlyCostPerSeat: 21,
+        features: ['SSO', 'IP indemnity', 'Audit logs'],
       },
     ],
     alternatives: ['cursor'],
@@ -251,17 +247,13 @@ export const PRICING_CONFIG: Record<string, ToolPricing> = {
   anthropic_api: {
     id: 'anthropic_api',
     name: 'Anthropic API',
-    plans: [
-      { name: 'API Direct', tier: 'api', monthlyCostPerSeat: 5, features: ['Pay as you go'] }
-    ],
+    plans: [{ name: 'API Direct', tier: 'api', monthlyCostPerSeat: 0, features: ['Pay as you go'] }],
     alternatives: ['openai_api'],
   },
   openai_api: {
     id: 'openai_api',
     name: 'OpenAI API',
-    plans: [
-      { name: 'API Direct', tier: 'api', monthlyCostPerSeat: 5, features: ['Pay as you go'] }
-    ],
+    plans: [{ name: 'API Direct', tier: 'api', monthlyCostPerSeat: 0, features: ['Pay as you go'] }],
     alternatives: ['anthropic_api'],
   },
   windsurf: {
@@ -270,9 +262,14 @@ export const PRICING_CONFIG: Record<string, ToolPricing> = {
     plans: [
       { name: 'Free', tier: 'free', monthlyCostPerSeat: 0, features: ['Basic'] },
       { name: 'Pro', tier: 'pro', monthlyCostPerSeat: 15, features: ['Pro features'] },
-      { name: 'Enterprise', tier: 'enterprise', monthlyCostPerSeat: 30, features: ['Enterprise features'] }
+      {
+        name: 'Enterprise',
+        tier: 'enterprise',
+        monthlyCostPerSeat: 30,
+        minSeats: 5,
+        features: ['Enterprise features'],
+      },
     ],
     alternatives: ['cursor', 'copilot'],
   },
 };
-

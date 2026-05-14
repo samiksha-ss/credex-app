@@ -810,3 +810,8 @@ Then implement incrementally.
 
 Do not massively rewrite the application.
 Build on top of the current architecture and preserve consistency.
+
+
+
+#PROMPT 6:
+"Run npm run build and fix errors"

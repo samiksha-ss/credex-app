@@ -99,8 +99,24 @@
 
 ## Day 7— 2026-05-13
 
+**Hours worked:** 2
+**What I did:**
+- Fixed the errors when runningn npm run build
+**What I learned:** 
+- No use trying to ask an ai to fix code.
+**Blockers / what I'm stuck on:** 
+- work life balance
+- forgot to deploy and push.
+**Plan for tomorrow:** deploy and submit
+
+
+## Day 8— 2026-05-14
+
 **Hours worked:**
 **What I did:**
-**What I learned:** ...
-**Blockers / what I'm stuck on:** ...
-**Plan for tomorrow:** ...
+- deployed the website and fixed minor issues
+**What I learned:** 
+- how to manage work as well as studies.
+**Blockers / what I'm stuck on:**
+- none.
+**Plan for tomorrow:** -
